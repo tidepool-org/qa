@@ -1,0 +1,27 @@
+{
+  "name": "nightwatch-tests",
+  "version": "0.0.1",
+  "description": "Functional qa tests using nightwatch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nightwatch",
+    "qa",
+    "functional",
+    "testing"
+  ],
+  "author": "Ed Nykaza",
+  "license": "BSD-2-Clause",
+  "engines": {
+    "node": "0.12.x",
+    "npm": "3.x"
+  },
+  "dependencies": {
+    "chromedriver": "^2.21.2",
+    "moment": "^2.16.0",
+    "nightwatch": "^0.9.6",
+    "selenium-server-standalone-jar": "2.53.1"
+  }
+}
