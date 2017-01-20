@@ -17,7 +17,7 @@ module.exports = {
             this
             
                 // put assertions here
-                .pauseAndSaveScreenshot(this.api.globals.test_settings.captureScreens, 5000, '<screen-capture-name>')
+                .pauseAndSaveScreenshot(5000, '<screen-capture-name>')
                 .click('@submit');
             
             return this;
