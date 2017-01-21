@@ -40,9 +40,8 @@ module.exports = {
     },
     commands: [{
         setUpDataStorage: function (setUpDSAMe, userBirthday, diagnosisDate, userFullName) {
-            this
-                .waitForElementPresent('@forMe')
-                .pauseAndSaveScreenshot(10000, 'set-up-data-storage-page');
+            
+            this.waitForElementPresent('@forMe');
             
             if (setUpDSAMe.toLowerCase().indexOf('n') === 0) {
                 this
