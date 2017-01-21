@@ -73,6 +73,11 @@ The following abbreviations are used to shorten the test names:
 
 | Abbreviation  | Means  |
 |---|---|
-| RememberNo  | do not check the remember me checkbox  |
+| "_" | here the underscore stands for "and" | 
+| DSAMe (DSANotMe) | set up a data storage acount for me (or someone else)  |
+| Email (EmailNo)  | do (or do not) veryify email  |
 | Login  | login to existing user  |
 | Nav  | navigate from one page and to another page  |
+| RemeberMe (RememberNo)  | do (or do not) check the remember me checkbox  |
+| Signup (18, 15, 12)  | Sign up a new user that is (>17, 13-17, or < 13) |
+| 

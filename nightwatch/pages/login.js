@@ -2,7 +2,7 @@
 
 module.exports = {
     elements: {
-        usernameField: {
+        userNameField: {
             selector: '#username'
         },
         passwordField: {
@@ -18,8 +18,8 @@ module.exports = {
     commands: [{
         signIn: function (userEmail, rememberMe) {
             this
-                .waitForElementPresent('#username')
-                .setValue('@usernameField', userEmail)
+                .waitForElementPresent('@userNameField')
+                .setValue('@userNameField', userEmail)
                 .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD);
             if (rememberMe) {
                 this.click('@rememberMeCheckBox');
