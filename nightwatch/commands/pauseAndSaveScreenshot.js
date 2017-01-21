@@ -1,12 +1,12 @@
 "use strict";
 
-exports.command = function (saveScreenshots, pauseLengthMilliSeconds, screenshotName, callback) {
+exports.command = function (pauseLengthMilliSeconds, screenshotName, callback) {
     var self = this;
     var screenshotsDirectory = './screenshots/detailed/' + self.currentTest.module + '/' + self.globals.timeTestStarted;
 
     self.perform(
         function () {
-            if (saveScreenshots) {
+            if (self.globals.test_settings.captureScreens) {
                 self.pause(pauseLengthMilliSeconds);
                 self.saveScreenshot(screenshotsDirectory + '/' + screenshotName + '.png');
             }

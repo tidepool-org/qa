@@ -5,7 +5,7 @@ module.exports = {navBlipToTidepool : function (browser) {
     browser
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
         .waitForElementPresent('a[href="http://tidepool.org/"] > img')
-        .pauseAndSaveScreenshot(browser.globals.test_settings.captureScreens, 5000, 'blip-login-page')
+        .pauseAndSaveScreenshot(5000, 'blip-login-page')
         .click('a[href="http://tidepool.org/"] > img')
         .windowHandles(function (window) {
             this.verify.equal(window.value.length, 2, 'There should be 2 windows open');
@@ -27,7 +27,7 @@ module.exports = {navBlipToTidepool : function (browser) {
         .assert.containsText('.social > h4', 'Follow Us')
         .assert.elementPresent('a[href="https://twitter.com/Tidepool_org"]')
         .assert.elementPresent('a[href="https://www.facebook.com/TidepoolOrg"]')
-        .pauseAndSaveScreenshot(browser.globals.test_settings.captureScreens, 1000, 'tidepool-page.png')
+        .pauseAndSaveScreenshot(1000, 'tidepool-page.png')
         .end();
     }
 };

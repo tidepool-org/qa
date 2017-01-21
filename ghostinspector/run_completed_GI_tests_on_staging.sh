@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # This script will run all of the completed ghost inspector (GI) tests
-# on staging, the immediate option is used, so that no results are
-# returned.
-#
-# NOTE: the results are not needed, because all of the test information
-# is available in ghostinspector. Further, if any of the tests fail,
+# on staging. 
+
+# NOTE: The immediate option is used, so that no results are
+# returned. The results are not needed, because all of the test information
+# is available in GI. Further, if any of the tests fail,
 # the normal notifications set up in GI will happen (i.e., an email and
 # slack notification)
 
