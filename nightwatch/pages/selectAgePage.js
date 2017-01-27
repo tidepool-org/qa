@@ -26,7 +26,6 @@ module.exports = {
             } else {
                 this.click('@age13to17RadioButton');
                 }
-            }
             
             this
                 .pauseAndSaveScreenshot(10000, 'select-age-page')
