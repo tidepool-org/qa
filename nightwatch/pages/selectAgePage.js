@@ -21,11 +21,10 @@ module.exports = {
             
             if (userAge >= 18) {
                 this.click('@ageGTE18RadioButton');
+            } else if (userAge <= 12) {
+                this.click('@ageLTE12RadioButton');
             } else {
-                if (userAge <= 12) {
-                    this.click('@ageLTE12RadioButton');
-                } else {
-                    this.click('@age13to17RadioButton');
+                this.click('@age13to17RadioButton');
                 }
             }
             
