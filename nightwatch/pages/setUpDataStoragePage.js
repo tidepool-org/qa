@@ -4,63 +4,63 @@ var moment = require('moment');
 
 module.exports = {
     elements: {
-        forMe: {
+        dataStorageForMeCheckbox: {
             selector: '#isOtherPerson0'
         },
-        forSomeoneElse: {
+        dataStorageForSomeoneElseCheckbox: {
             selector: '#isOtherPerson1'
         },
-        fullName: {
+        fullNameField: {
             selector: '#fullName'
         },
-        aboutPerson: {
+        aboutField: {
             selector: '#about'
         },
-        birthMonth: {
+        birthdayMonth: {
             selector: 'div[name="birthday"] > select[name="month"].DatePicker-control.DatePicker-control--month'
         },
-        birthDay: {
+        birthdayDay: {
             selector: 'div[name="birthday"] > input[name="day"].DatePicker-control.DatePicker-control--day'
         },
-        birthYear: {
+        birthdayYear: {
             selector: 'div[name="birthday"] > input[name="year"].DatePicker-control.DatePicker-control--year'
         },
-        diagnosisMonth: {
+        diagnosisDateMonth: {
             selector: 'div[name="diagnosisDate"] > select[name="month"].DatePicker-control.DatePicker-control--month'
         },
-        diagnosisDay: {
+        diagnosisDateDay: {
             selector: 'div[name="diagnosisDate"] > input[name="day"].DatePicker-control.DatePicker-control--day'
         },
-        diagnosisYear: {
+        diagnosisDateYear: {
             selector: 'div[name="diagnosisDate"] > input[name="year"].DatePicker-control.DatePicker-control--year'
         },
-        submit: {
+        submitButton: {
             selector: 'button.btn'
         }
     },
     commands: [{
         setUpDataStorage: function (setUpDSAMe, userBirthday, diagnosisDate, userFullName) {
             
-            this.waitForElementPresent('@forMe');
+            this.waitForElementPresent('@dataStorageForMeCheckbox');
             
             if (setUpDSAMe.toLowerCase().indexOf('n') === 0) {
                 this
-                    .click('@forSomeoneElse')
-                    .setValue('@fullName', userFullName);
+                    .click('@dataStorageForSomeoneElseCheckbox')
+                    .setValue('@fullNameField', userFullName);
             } else {
-                this.click('@forMe');
+                this.click('@dataStorageForMeCheckbox');
             }
             
             this
-                .setValue('@aboutPerson', 'I am a fake person')
-                .setValue('@birthMonth', moment(userBirthday).format('MMMM'))
-                .setValue('@birthDay', moment(userBirthday).format('D'))
-                .setValue('@birthYear', moment(userBirthday).format('YYYY'))
-                .setValue('@diagnosisMonth', moment(diagnosisDate).format('MMMM'))
-                .setValue('@diagnosisDay', moment(diagnosisDate).format('D'))
-                .setValue('@diagnosisYear', moment(diagnosisDate).format('YYYY'))
+                .setValue('@aboutField', 'I am a fake person')
+                .setValue('@birthdayMonth', moment(userBirthday).format('MMMM'))
+                .setValue('@birthdayDay', moment(userBirthday).format('D'))
+                .setValue('@birthdayYear', moment(userBirthday).format('YYYY'))
+                .setValue('@diagnosisDateMonth', moment(diagnosisDate).format('MMMM'))
+                .setValue('@diagnosisDateDay', moment(diagnosisDate).format('D'))
+                .setValue('@diagnosisDateYear', moment(diagnosisDate).format('YYYY'))
                 .pauseAndSaveScreenshot(5000, 'set-up-data-storage-page')
-                .click('@submit');
+                .click('@submitButton');
             
             return this;
         }

@@ -14,10 +14,10 @@ module.exports = {
         passwordConfirmField: {
             selector: '#passwordConfirm'
         },
-        rememberMeCheckBox: {
+        rememberCheckbox: {
             selector: '#remember'
         },
-        submit: {
+        submitButton: {
             selector: 'button.simple-form-submit'
         }
     },
@@ -30,7 +30,7 @@ module.exports = {
                 .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD)
                 .setValue('@passwordConfirmField', process.env.TIDEPOOL_BLIP_USER_PASSWORD)
                 .pauseAndSaveScreenshot(5000, 'blip-signup-new-user-page')
-                .click('@submit')
+                .click('@submitButton')
                 .waitForElementPresent('.EmailVerification-title')
                 .pauseAndSaveScreenshot(10000, 'email-verification-needed-page');
             

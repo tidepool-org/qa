@@ -2,36 +2,36 @@
 
 module.exports = {
     elements: {
-        age18orOlder: {
+        ageGTE18RadioButton: {
             selector: 'input[name="age"][value=">=18"]'
         },
-        age13to17: {
+        age13to17RadioButton: {
             selector: 'input[name="age"][value="13-17"]'
         },
-        age12orYounger: {
+        ageLTE12RadioButton: {
             selector: 'input[name="age"][value="<=12"]'
         },
-        submit: {
+        submitButton: {
             selector: 'button.btn'
         }
     },
     commands: [{
         selectAge: function (userAge) {
-            this.waitForElementPresent('@age18orOlder');
+            this.waitForElementPresent('@ageGTE18RadioButton');
             
             if (userAge >= 18) {
-                this.click('@age18orOlder');
+                this.click('@ageGTE18RadioButton');
             } else {
                 if (userAge <= 12) {
-                    this.click('@age12orYounger');
+                    this.click('@ageLTE12RadioButton');
                 } else {
-                    this.click('@age13to17');
+                    this.click('@age13to17RadioButton');
                 }
             }
             
             this
                 .pauseAndSaveScreenshot(10000, 'select-age-page')
-                .click('@submit');
+                .click('@submitButton');
             
             return this;
         }

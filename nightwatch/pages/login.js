@@ -2,31 +2,31 @@
 
 module.exports = {
     elements: {
-        userNameField: {
+        usernameField: {
             selector: '#username'
         },
         passwordField: {
             selector: '#password'
         },
-        rememberCheckBox: {
+        rememberCheckbox: {
             selector: '#remember'
         },
-        submit: {
+        submitButton: {
             selector: 'button.simple-form-submit'
         }
     },
     commands: [{
         signIn: function (userEmail, remember) {
             this
-                .waitForElementPresent('@userNameField')
-                .setValue('@userNameField', userEmail)
+                .waitForElementPresent('@usernameField')
+                .setValue('@usernameField', userEmail)
                 .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD);
             if (remember) {
-                this.click('@rememberCheckBox');
+                this.click('@rememberCheckbox');
             }
             this
                 .pauseAndSaveScreenshot(5000, 'blip-login-page')
-                .click('@submit');
+                .click('@submitButton');
             
             return this;
         }
