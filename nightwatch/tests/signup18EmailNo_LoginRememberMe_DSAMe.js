@@ -2,7 +2,7 @@
 
 var moment = require('moment');
 
-module.exports = {signup18EmailNo_LoginRememberMe_DSAMe : function (browser) {
+module.exports = {signup18EmailNo_LoginRemember_DSAMe : function (browser) {
     
     function randInt(min, max) {
         min = Math.ceil(min);

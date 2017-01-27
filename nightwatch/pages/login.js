@@ -8,7 +8,7 @@ module.exports = {
         passwordField: {
             selector: '#password'
         },
-        rememberMeCheckBox: {
+        rememberCheckBox: {
             selector: '#remember'
         },
         submit: {
@@ -16,13 +16,13 @@ module.exports = {
         }
     },
     commands: [{
-        signIn: function (userEmail, rememberMe) {
+        signIn: function (userEmail, remember) {
             this
                 .waitForElementPresent('@userNameField')
                 .setValue('@userNameField', userEmail)
                 .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD);
-            if (rememberMe) {
-                this.click('@rememberMeCheckBox');
+            if (remember) {
+                this.click('@rememberCheckBox');
             }
             this
                 .pauseAndSaveScreenshot(5000, 'blip-login-page')
