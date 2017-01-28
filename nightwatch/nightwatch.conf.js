@@ -33,6 +33,6 @@ module.exports = {
         },
         "captureScreens": {
             "captureScreens": true
-        },
+        }
     }
 };

@@ -1,8 +1,8 @@
 "use strict";
 
 exports.command = function (pauseLengthMilliSeconds, screenshotName, callback) {
-    var self = this;
-    var screenshotsDirectory = './screenshots/detailed/' + self.currentTest.module + '/' + self.globals.timeTestStarted;
+    var self = this,
+        screenshotsDirectory = './screenshots/detailed/' + self.currentTest.module + '/' + self.globals.timeTestStarted;
 
     self.perform(
         function () {
