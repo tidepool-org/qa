@@ -20,6 +20,7 @@ module.exports = {
         "default": {
             "globals": globalVariables,
             "captureScreens": false,
+            "specifyRandomSeed": false,
             "screenshots": {
                 "enabled": true,
                 "on_failure": true,
@@ -33,6 +34,11 @@ module.exports = {
         },
         "captureScreens": {
             "captureScreens": true
+        },
+        "debugMode": {
+            "captureScreens": true,
+            "specifyRandomSeed": true,
+            "randomSeed": '20170128T15.49.01.796'
+            }
         }
-    }
 };
