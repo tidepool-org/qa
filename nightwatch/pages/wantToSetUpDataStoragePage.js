@@ -10,16 +10,16 @@ module.exports = {
         }
     },
     commands: [{
-        setUpData: function (setUpDataYesOrNo) {
+        setUpData: function (setUpData) {
             
             this
                 .waitForElementPresent('@yesSetUpDataSubmitButton')
                 .pauseAndSaveScreenshot(10000, 'do-you-want-to-set-up-data-page');
             
-            if (setUpDataYesOrNo.toLowerCase().indexOf('n') === 0) {
-                this.click('@noSetUpDataSubmitButton');
-            } else {
+            if (setUpData) {
                 this.click('@yesSetUpDataSubmitButton');
+            } else {
+                this.click('@noSetUpDataSubmitButton');
             }
         
             return this;

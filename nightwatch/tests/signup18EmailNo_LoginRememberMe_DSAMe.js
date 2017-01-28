@@ -4,17 +4,18 @@ var moment = require('moment');
 
 module.exports = {signup18EmailNo_LoginRemember_DSAMe : function (browser) {
     
-    function randInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    var userName = 'nightwatch+' + browser.globals.timeTestStarted +
+        'R' + Math.round(Math.random() * 1E6);
+    var userEmail = userName + '+' + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY +
+        '@tidepool.org';
     
-    var userName = 'nightwatch+' + browser.globals.timeTestStarted + 'R' + Math.random();
-    var userEmail = userName + '+' + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY + '@tidepool.org';
-    var userBirthday = moment([1980 + randInt(0, 18), randInt(0, 11), randInt(1, 28)]);
-    var userDiagnosisDate = moment(userBirthday).add(1, 'years');
-    var userAge = moment.utc().diff(userBirthday, 'years');
+    var rand = require('random-seed').create(browser.globals.timeTestStarted);
+    var today = moment.utc();
+    var maxBirthday = today.subtract(18, 'years');
+    var userBirthday = maxBirthday.subtract(rand.intBetween(0, 36500), 'days');
+    var userAge = today.diff(userBirthday, 'years');
+    var numberDaysAlive = today.diff(userBirthday, 'days');
+    var diagnosisDate = today.subtract(rand.intBetween(0, numberDaysAlive), 'days');
     
     browser
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL + 'signup/?inviteKey=' + process.env.TIDEPOOL_BLIP_USER_INVITE_KEY)
@@ -24,8 +25,8 @@ module.exports = {signup18EmailNo_LoginRemember_DSAMe : function (browser) {
         .page.login().signIn(userEmail, true);
     browser.page.selectAgePage().selectAge(userAge);
     browser.page.acceptTermsPage().acceptTerms(userAge);
-    browser.page.wantToSetUpDataStoragePage().setUpData('yes');
-    browser.page.setUpDataStoragePage().setUpDataStorage('yes', userBirthday, userDiagnosisDate);
+    browser.page.wantToSetUpDataStoragePage().setUpData(true);
+    browser.page.setUpDataStoragePage().setUpDataStorage(true, userBirthday, diagnosisDate);
     browser
         .waitForElementPresent('.patient-data-message-no-data')
         .pauseAndSaveScreenshot(10000, 'patient-data-message-no-data-page')

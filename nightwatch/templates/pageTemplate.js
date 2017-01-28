@@ -8,7 +8,7 @@ module.exports = {
         selector2Field: {
             selector: '#selector2name'
         },
-        submit: {
+        submitButton: {
             selector: 'button.simple-form-submit'
         }
     },
@@ -18,7 +18,7 @@ module.exports = {
             
                 // put assertions here
                 .pauseAndSaveScreenshot(5000, '<screen-capture-name>')
-                .click('@submit');
+                .click('@submitButton');
             
             return this;
         }
