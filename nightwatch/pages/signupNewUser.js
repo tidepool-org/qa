@@ -5,7 +5,7 @@ module.exports = {
         fullNameField: {
             selector: '#fullName'
         },
-        userEmailField: {
+        usernameField: {
             selector: '#username'
         },
         passwordField: {
@@ -26,7 +26,7 @@ module.exports = {
             this
                 .waitForElementPresent('@fullNameField')
                 .setValue('@fullNameField', userName)
-                .setValue('@userEmailField', userEmail)
+                .setValue('@usernameField', userEmail)
                 .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD)
                 .setValue('@passwordConfirmField', process.env.TIDEPOOL_BLIP_USER_PASSWORD)
                 .pauseAndSaveScreenshot(5000, 'blip-signup-new-user-page')
