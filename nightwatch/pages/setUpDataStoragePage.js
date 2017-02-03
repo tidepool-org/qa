@@ -41,8 +41,8 @@ module.exports = {
     commands: [{
         setUpDataStorage: function (setUpDSAForMe, userBirthday, diagnosisDate, userFullName) {
             
-            var bday = moment(userBirthday),
-                dday = moment(diagnosisDate);
+            var bday = moment(userBirthday);
+            var dday = moment(diagnosisDate);
             
             this.waitForElementPresent('@dataStorageForMeCheckbox');
             

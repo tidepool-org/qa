@@ -11,16 +11,16 @@ module.exports = {signup18EmailNo_LoginRemember_DSAMe : function (browser) {
     }
     
     var userName = 'nightwatch+' + browser.globals.timeTestStarted +
-        'R' + Math.round(Math.random() * 1E6),
-        userEmail = userName + '+' + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY +
-        '@tidepool.org',
-        rand = require('random-seed').create(randomSeed),
-        now = moment.utc(),
-        maxBirthday = moment(now).subtract(18, 'years'),
-        userBirthday = maxBirthday.subtract(rand.intBetween(0, 36500), 'days'),
-        userAge = moment(now).diff(userBirthday, 'years'),
-        numberDaysAlive = moment(now).diff(userBirthday, 'days'),
-        diagnosisDate = moment(now).subtract(rand.intBetween(0, numberDaysAlive), 'days');
+    var 'R' + Math.round(Math.random() * 1E6);
+    var userEmail = userName + '+' + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY +
+        '@tidepool.org';
+    var rand = require('random-seed').create(randomSeed);
+    var now = moment.utc();
+    var maxBirthday = moment(now).subtract(18, 'years');
+    var userBirthday = maxBirthday.subtract(rand.intBetween(0, 36500), 'days');
+    var userAge = moment(now).diff(userBirthday, 'years');
+    var numberDaysAlive = moment(now).diff(userBirthday, 'days');
+    var diagnosisDate = moment(now).subtract(rand.intBetween(0, numberDaysAlive), 'days');
     
     browser
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL + 'signup/?inviteKey=' + process.env.TIDEPOOL_BLIP_USER_INVITE_KEY)
