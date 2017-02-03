@@ -74,8 +74,8 @@ The following abbreviations are used to shorten the test names:
 | Abbreviation  | Means  |
 |---|---|
 | "_" | here the underscore stands for "and" | 
-| DSAMe (DSANotMe) | set up a data storage acount for me (or someone else)  |
-| Email (EmailNo)  | do (or do not) veryify email  |
+| DSAMe (DSANotMe) | set up a data storage account for me (or someone else)  |
+| Email (EmailNo)  | do (or do not) verify email  |
 | Login  | login to existing user  |
 | Nav  | navigate from one page and to another page  |
 | Remember (RememberNo)  | do (or do not) check the remember me checkbox  |

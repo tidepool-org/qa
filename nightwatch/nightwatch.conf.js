@@ -19,8 +19,6 @@ module.exports = {
     "test_settings": {
         "default": {
             "globals": globalVariables,
-            "captureScreens": false,
-            "specifyRandomSeed": false,
             "screenshots": {
                 "enabled": true,
                 "on_failure": true,
@@ -35,9 +33,8 @@ module.exports = {
         "captureScreens": {
             "captureScreens": true
         },
-        "debugMode": {
+        "debug": {
             "captureScreens": true,
-            "specifyRandomSeed": true,
             "randomSeed": '20170128T15.49.01.796'
             }
         }

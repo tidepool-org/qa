@@ -2,10 +2,10 @@
 
 module.exports = {
     elements: {
-        noSetUpDataSubmitButton: {
+        setUpDataSubmitButtonNo: {
             selector: 'button.btn.btn-tertiary'
         },
-        yesSetUpDataSubmitButton: {
+        setUpDataSubmitButtonYes: {
             selector: 'button.btn.btn-primary'
         }
     },
@@ -13,13 +13,13 @@ module.exports = {
         setUpData: function (setUpData) {
             
             this
-                .waitForElementPresent('@yesSetUpDataSubmitButton')
+                .waitForElementPresent('@setUpDataSubmitButtonYes')
                 .pauseAndSaveScreenshot(10000, 'do-you-want-to-set-up-data-page');
             
             if (setUpData) {
-                this.click('@yesSetUpDataSubmitButton');
+                this.click('@setUpDataSubmitButtonYes');
             } else {
-                this.click('@noSetUpDataSubmitButton');
+                this.click('@setUpDataSubmitButtonNo');
             }
         
             return this;

@@ -39,10 +39,10 @@ module.exports = {
         }
     },
     commands: [{
-        setUpDataStorage: function (setUpDSAForMe, userBirthday, diagnosisDate, userFullName) {
+        setUpDataStorage: function (setUpDSAForMe, pwdBirthday, diagnosisDate, pwdFullName) {
             
-            var bday = moment(userBirthday);
-            var dday = moment(diagnosisDate);
+            var birthDate = moment(pwdBirthday);
+            var diagnosisDate = moment(diagnosisDate);
             
             this.waitForElementPresent('@dataStorageForMeCheckbox');
             
@@ -51,17 +51,17 @@ module.exports = {
             } else {
                 this
                     .click('@dataStorageForSomeoneElseCheckbox')
-                    .setValue('@fullNameField', userFullName);
+                    .setValue('@fullNameField', pwdFullName);
             }
             
             this
                 .setValue('@aboutField', 'I am a fake person')
-                .setValue('@birthdayMonth', bday.format('MMMM'))
-                .setValue('@birthdayDay', bday.format('D'))
-                .setValue('@birthdayYear', bday.format('YYYY'))
-                .setValue('@diagnosisDateMonth', dday.format('MMMM'))
-                .setValue('@diagnosisDateDay', dday.format('D'))
-                .setValue('@diagnosisDateYear', dday.format('YYYY'))
+                .setValue('@birthdayMonth', birthDate.format('MMMM'))
+                .setValue('@birthdayDay', birthDate.format('D'))
+                .setValue('@birthdayYear', birthDate.format('YYYY'))
+                .setValue('@diagnosisDateMonth', diagnosisDate.format('MMMM'))
+                .setValue('@diagnosisDateDay', diagnosisDate.format('D'))
+                .setValue('@diagnosisDateYear', diagnosisDate.format('YYYY'))
                 .pauseAndSaveScreenshot(5000, 'set-up-data-storage-page')
                 .click('@submitButton');
             
