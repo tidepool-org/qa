@@ -24,5 +24,6 @@
     "nightwatch": "^0.9.6",
     "random-seed": "^0.3.0",
     "selenium-server-standalone-jar": "2.53.1"
+    "superagent": "^3.4.1",
   }
 }
