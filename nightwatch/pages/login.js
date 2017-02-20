@@ -20,15 +20,17 @@ module.exports = {
             this
                 .waitForElementPresent('@usernameField')
                 .setValue('@usernameField', userEmail)
-                .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD);
-            if (remember) {
-                this.click('@rememberCheckbox');
-            }
+                .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD)
+                .api.perform(function () {
+                    if (remember) {
+                        this.click('@rememberCheckbox');
+                    }
+                })
             this
                 .pauseAndSaveScreenshot(5000, 'blip-login-page')
-                .click('@submitButton');
+                .click('@submitButton')
             
-            return this;
+            return this.api;
         }
     }]
 };
