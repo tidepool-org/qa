@@ -13,23 +13,38 @@ module.exports = {
         },
         submitButton: {
             selector: 'button.simple-form-submit'
+        },
+        notification: {
+            selector: '.simple-form-notification'
         }
     },
+    
     commands: [{
         signIn: function (userEmail, remember) {
-            this
+            
+            var self = this;
+
+            self
                 .waitForElementPresent('@usernameField')
                 .setValue('@usernameField', userEmail)
                 .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD)
                 .api.perform(function () {
                     if (remember) {
-                        this.click('@rememberCheckbox');
+                        self.click('@rememberCheckbox');
                     }
                 })
-            this
+            self
                 .pauseAndSaveScreenshot(5000, 'blip-login-page')
                 .click('@submitButton')
-            
+            return self.api;
+        }
+    },
+    {
+        confirmInvalidLogin: function () {
+
+            this
+                .waitForElementPresent('@notification')
+                .assert.containsText('@notification', 'Wrong username or password.', 'User (likely) deleted')
             return this.api;
         }
     }]

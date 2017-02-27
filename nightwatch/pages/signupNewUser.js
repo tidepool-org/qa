@@ -21,6 +21,7 @@ module.exports = {
             selector: 'button.simple-form-submit'
         }
     },
+    
     commands: [{
         createNewUser: function (userName, userEmail) {
             this
@@ -32,9 +33,8 @@ module.exports = {
                 .pauseAndSaveScreenshot(5000, 'blip-signup-new-user-page')
                 .click('@submitButton')
                 .waitForElementPresent('.EmailVerification-title')
-                .pauseAndSaveScreenshot(10000, 'email-verification-needed-page');
-            
-            return this;
+                .pauseAndSaveScreenshot(10000, 'email-verification-needed-page')
+            return this.api;
         }
     }]
 };

@@ -15,23 +15,27 @@ module.exports = {
             selector: 'button.btn'
         }
     },
+    
     commands: [{
         selectAge: function (userAge) {
-            this.waitForElementPresent('@ageGTE18RadioButton');
             
-            if (userAge >= 18) {
-                this.click('@ageGTE18RadioButton');
-            } else if (userAge <= 12) {
-                this.click('@ageLTE12RadioButton');
-            } else {
-                this.click('@age13to17RadioButton');
-                }
+            var self = this;
             
-            this
+            self
+                .waitForElementPresent('@ageGTE18RadioButton')
+                .api.perform(function () {
+                    if (userAge >= 18) {
+                        self.click('@ageGTE18RadioButton');
+                    } else if (userAge <= 12) {
+                        self.click('@ageLTE12RadioButton');
+                    } else {
+                        self.click('@age13to17RadioButton');
+                    }
+                })
+            self
                 .pauseAndSaveScreenshot(10000, 'select-age-page')
-                .click('@submitButton');
-            
-            return this;
+                .click('@submitButton')
+            return self.api;
         }
     }]
 };

@@ -9,20 +9,23 @@ module.exports = {
             selector: 'button.btn.btn-primary'
         }
     },
+    
     commands: [{
         setUpData: function (setUpData) {
             
-            this
-                .waitForElementPresent('@setUpDataSubmitButtonYes')
-                .pauseAndSaveScreenshot(10000, 'do-you-want-to-set-up-data-page');
+            var self = this;
             
-            if (setUpData) {
-                this.click('@setUpDataSubmitButtonYes');
-            } else {
-                this.click('@setUpDataSubmitButtonNo');
-            }
-        
-            return this;
+            self
+                .waitForElementPresent('@setUpDataSubmitButtonYes')
+                .pauseAndSaveScreenshot(10000, 'do-you-want-to-set-up-data-page')
+                .api.perform(function () {
+                    if (setUpData) {
+                        self.click('@setUpDataSubmitButtonYes');
+                    } else {
+                        self.click('@setUpDataSubmitButtonNo');
+                    }
+                })
+            return self.api;
         }
     }]
 };

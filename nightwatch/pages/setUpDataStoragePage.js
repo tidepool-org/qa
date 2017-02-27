@@ -38,23 +38,25 @@ module.exports = {
             selector: 'button.btn'
         }
     },
+    
     commands: [{
         setUpDataStorage: function (setUpDSAForMe, pwdBirthday, diagnosisDate, pwdFullName) {
             
+            var self = this;
             var birthDate = moment(pwdBirthday);
             var diagnosisDate = moment(diagnosisDate);
             
-            this.waitForElementPresent('@dataStorageForMeCheckbox');
-            
-            if (setUpDSAForMe) {
-                this.click('@dataStorageForMeCheckbox');
-            } else {
-                this
-                    .click('@dataStorageForSomeoneElseCheckbox')
-                    .setValue('@fullNameField', pwdFullName);
-            }
-            
-            this
+            self.waitForElementPresent('@dataStorageForMeCheckbox')
+                .api.perform(function () {
+                    if (setUpDSAForMe) {
+                        self.click('@dataStorageForMeCheckbox');
+                    } else {
+                        self
+                            .click('@dataStorageForSomeoneElseCheckbox')
+                            .setValue('@fullNameField', pwdFullName);
+                    }
+                })
+            self
                 .setValue('@aboutField', 'I am a fake person')
                 .setValue('@birthdayMonth', birthDate.format('MMMM'))
                 .setValue('@birthdayDay', birthDate.format('D'))
@@ -63,9 +65,8 @@ module.exports = {
                 .setValue('@diagnosisDateDay', diagnosisDate.format('D'))
                 .setValue('@diagnosisDateYear', diagnosisDate.format('YYYY'))
                 .pauseAndSaveScreenshot(5000, 'set-up-data-storage-page')
-                .click('@submitButton');
-            
-            return this;
+                .click('@submitButton')
+            return self.api;
         }
     }]
 };
