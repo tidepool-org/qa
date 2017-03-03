@@ -15,9 +15,9 @@ module.exports = {
             selector: 'button.simple-form-submit'
         }
     },
+
     commands: [{
-        functionName: function (variable1, variable2) {
-            
+        functionName: function (variable1, variable2) {  
             var self = this;
             
             self

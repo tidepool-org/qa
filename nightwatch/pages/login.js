@@ -20,8 +20,7 @@ module.exports = {
     },
     
     commands: [{
-        signIn: function (userEmail, remember) {
-            
+        signIn: function (userEmail, remember) {    
             var self = this;
 
             self
@@ -41,7 +40,6 @@ module.exports = {
     },
     {
         confirmInvalidLogin: function () {
-
             this
                 .waitForElementPresent('@notification')
                 .assert.containsText('@notification', 'Wrong username or password.', 'User (likely) deleted')

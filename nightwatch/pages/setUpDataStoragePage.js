@@ -40,8 +40,7 @@ module.exports = {
     },
     
     commands: [{
-        setUpDataStorage: function (setUpDSAForMe, pwdBirthday, diagnosisDate, pwdFullName) {
-            
+        setUpDataStorage: function (setUpDSAForMe, pwdBirthday, diagnosisDate, pwdFullName) {      
             var self = this;
             var birthDate = moment(pwdBirthday);
             var diagnosisDate = moment(diagnosisDate);

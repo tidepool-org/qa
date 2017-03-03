@@ -13,8 +13,7 @@ module.exports = {
         }
     },
     commands: [{
-        acceptTerms: function (userAge) {
-            
+        acceptTerms: function (userAge) {       
             var self = this;
             
             self

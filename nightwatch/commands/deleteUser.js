@@ -1,6 +1,6 @@
 'use strict';
 
-exports.command = function (email, callback) {
+exports.command = function (email, callback) { 
     var self = this;
     
     self.perform(

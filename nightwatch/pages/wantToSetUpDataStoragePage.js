@@ -11,8 +11,7 @@ module.exports = {
     },
     
     commands: [{
-        setUpData: function (setUpData) {
-            
+        setUpData: function (setUpData) {      
             var self = this;
             
             self

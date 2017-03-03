@@ -2,8 +2,7 @@
 
 var request = require('superagent');
 
-exports.command = function (callback) {
-    
+exports.command = function (callback) {  
     var self = this;
     
     self.perform(
@@ -14,9 +13,7 @@ exports.command = function (callback) {
                 .send({ password: process.env.TIDEPOOL_BLIP_USER_PASSWORD })
                 .set('X-Tidepool-Session-Token', self.globals.authToken)
                 .set('Accept', 'application/json')
-                .end(function (err, result) {
-                    // Calling the end function sends the request 
-                });
+                .end();
         },
         
         function (result) {

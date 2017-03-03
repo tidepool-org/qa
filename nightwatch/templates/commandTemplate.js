@@ -1,6 +1,6 @@
 'use strict';
 
-exports.command = function (variable1, variable2, variableN, callback) {
+exports.command = function (variable1, variable2, variableN, callback) {    
     var self = this;
     
     self.perform(

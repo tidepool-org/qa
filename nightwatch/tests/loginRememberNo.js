@@ -1,7 +1,6 @@
 "use strict";
 
 module.exports = {loginRememberNo : function (browser) {
-    
     var userEmail = 'nightwatch+hasData1+' +
         process.env.TIDEPOOL_BLIP_USER_SKIP_KEY + '@tidepool.org';
     

@@ -4,13 +4,8 @@ var moment = require('moment');
 
 module.exports = {signup18EmailNo_loginRemember_DSAMe_deleteUser :
     function (browser) {
-    
-        if (browser.globals.test_settings.randomSeed) {
-            var randomSeed = browser.globals.test_settings.randomSeed;
-        } else {
-            var randomSeed = browser.globals.timeTestStarted;
-        }
-
+        var randomSeed = browser.globals.test_settings.randomSeed ||
+            browser.globals.timeTestStarted;
         var fullName = 'nightwatch+' + browser.globals.timeTestStarted +
             'R' + Math.round(Math.random() * 1E6);
         var email = fullName + '+' + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY +

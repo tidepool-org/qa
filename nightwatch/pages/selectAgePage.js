@@ -17,8 +17,7 @@ module.exports = {
     },
     
     commands: [{
-        selectAge: function (userAge) {
-            
+        selectAge: function (userAge) { 
             var self = this;
             
             self
