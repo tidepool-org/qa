@@ -2,7 +2,7 @@
 
 module.exports = {navBlipToTidepool : function (browser) {
     
-    var tidepoolHomepageLink = 
+    var tidepoolHomepageLink =
         browser.page.loginPage().elements.tidepoolHomepageLink.selector;
     
     browser
