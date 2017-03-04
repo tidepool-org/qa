@@ -1,6 +1,6 @@
 "use strict";
 
-exports.command = function (pauseLengthMilliSeconds, screenshotName, callback) {  
+exports.command = function (pauseLengthMilliSeconds, screenshotName) {
     var self = this;
     var screenshotsDirectory = './screenshots/detailed/' + self.currentTest.module
         + '/' + self.globals.timeTestStarted;
@@ -12,13 +12,8 @@ exports.command = function (pauseLengthMilliSeconds, screenshotName, callback) {
                 self.saveScreenshot(screenshotsDirectory + '/' + screenshotName
                     + '.png');
             }
-        },
-
-        function (result) {
-            if (typeof callback === "function") {
-                callback.call(self, result);
-            }
         }
     );
+    
     return self;
 };

@@ -1,6 +1,6 @@
 'use strict';
 
-exports.command = function (callback) {
+exports.command = function () {
     var self = this;
     
     self.perform(
@@ -23,16 +23,11 @@ exports.command = function (callback) {
                             var positionUserID = currentURL.indexOf("/data");
                             self.globals.userID = currentURL.substring(
                                 positionUserID - 10, positionUserID);
-                        })
+                        });
                     }
-                )
-        },
-        
-        function (result) {
-            if (typeof callback === "function") {
-                callback.call(self, result);
-            }
+                );
         }
-    )
+    );
+    
     return self;
 };

@@ -17,7 +17,7 @@ module.exports = {
     },
 
     commands: [{
-        functionName: function (variable1, variable2) {  
+        functionName: function (variable1, variable2) {
             var self = this;
             
             self
@@ -29,11 +29,12 @@ module.exports = {
                     if (variable1) {
                         self.click('@selector3Field');
                     }
-                })
+                });
             self
                 // put assertions here
                 .pauseAndSaveScreenshot(5000, '<screen-capture-name>')
-                .click('@submitButton')
+                .click('@submitButton');
+            
             return self.api;
         }
     }]

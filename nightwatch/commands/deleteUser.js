@@ -1,6 +1,6 @@
 'use strict';
 
-exports.command = function (email, callback) { 
+exports.command = function (email) {
     var self = this;
     
     self.perform(
@@ -15,14 +15,9 @@ exports.command = function (email, callback) {
                 .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
                 .page.login().signIn(email, false)
                 .page.login().confirmInvalidLogin()
-                .pauseAndSaveScreenshot(5000, 'confirm-delete-user')
-        },
-        
-        function (result) {
-            if (typeof callback === "function") {
-                callback.call(self, result);
-            }
+                .pauseAndSaveScreenshot(5000, 'confirm-delete-user');
         }
     );
+    
     return self;
 };

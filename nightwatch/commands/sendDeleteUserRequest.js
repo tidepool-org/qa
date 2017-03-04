@@ -2,7 +2,7 @@
 
 var request = require('superagent');
 
-exports.command = function (callback) {  
+exports.command = function () {
     var self = this;
     
     self.perform(
@@ -14,13 +14,8 @@ exports.command = function (callback) {
                 .set('X-Tidepool-Session-Token', self.globals.authToken)
                 .set('Accept', 'application/json')
                 .end();
-        },
-        
-        function (result) {
-            if (typeof callback === "function") {
-                callback.call(self, result);
-            }
         }
     );
+    
     return self;
 };

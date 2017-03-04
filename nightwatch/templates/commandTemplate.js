@@ -1,18 +1,13 @@
 'use strict';
 
-exports.command = function (variable1, variable2, variableN, callback) {    
+exports.command = function (variable1, variable2, variableN) {
     var self = this;
     
     self.perform(
         function () {
             // Function Here
-        },
-        
-        function (result) {
-            if (typeof callback === "function") {
-                callback.call(self, result);
-            }
         }
     );
+    
     return self;
 };
