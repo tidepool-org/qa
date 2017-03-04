@@ -8,27 +8,42 @@ module.exports = {
         passwordField: {
             selector: '#password'
         },
-        rememberMeCheckBox: {
+        rememberCheckbox: {
             selector: '#remember'
         },
-        submit: {
+        submitButton: {
             selector: 'button.simple-form-submit'
+        },
+        notification: {
+            selector: '.simple-form-notification'
         }
     },
+    
     commands: [{
-        signIn: function (userEmail, rememberMe) {
-            this
-                .waitForElementPresent('#username')
+        signIn: function (userEmail, remember) {    
+            var self = this;
+
+            self
+                .waitForElementPresent('@usernameField')
                 .setValue('@usernameField', userEmail)
-                .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD);
-            if (rememberMe) {
-                this.click('@rememberMeCheckBox');
-            }
-            this
+                .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD)
+                .api.perform(function () {
+                    if (remember) {
+                        self.click('@rememberCheckbox');
+                    }
+                })
+            self
                 .pauseAndSaveScreenshot(5000, 'blip-login-page')
-                .click('@submit');
-            
-            return this;
+                .click('@submitButton')
+            return self.api;
+        }
+    },
+    {
+        confirmInvalidLogin: function () {
+            this
+                .waitForElementPresent('@notification')
+                .assert.containsText('@notification', 'Wrong username or password.', 'User (likely) deleted')
+            return this.api;
         }
     }]
 };
