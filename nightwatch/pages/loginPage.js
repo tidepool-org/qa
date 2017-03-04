@@ -14,13 +14,16 @@ module.exports = {
         submitButton: {
             selector: 'button.simple-form-submit'
         },
+        tidepoolHomepageLink: {
+            selector: 'a[href="http://tidepool.org/"]'
+        },
         notification: {
             selector: '.simple-form-notification'
         }
     },
     
     commands: [{
-        signIn: function (userEmail, remember) {    
+        signIn: function (userEmail, remember) {
             var self = this;
 
             self

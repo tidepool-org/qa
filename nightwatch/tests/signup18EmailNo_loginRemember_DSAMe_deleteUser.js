@@ -24,7 +24,7 @@ module.exports = {signup18EmailNo_loginRemember_DSAMe_deleteUser :
                  process.env.TIDEPOOL_BLIP_USER_INVITE_KEY)
             .page.signupNewUser().createNewUser(fullName, email)
             .click('a[href="/login"]')
-            .page.login().signIn(email, true)
+            .page.loginPage().signIn(email, true)
             .page.selectAgePage().selectAge(age)
             .page.acceptTermsPage().acceptTerms(age)
             .page.wantToSetUpDataStoragePage().setUpData(true)
