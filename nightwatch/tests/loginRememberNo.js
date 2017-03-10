@@ -6,7 +6,7 @@ module.exports = {loginRememberNo : function (browser) {
     
     browser
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-        .page.login().signIn(userEmail, false)
+        .page.loginPage().signIn(userEmail, false)
         .waitForElementPresent('.Navbar-loggedInAs')
         .pauseAndSaveScreenshot(10000, 'blip-logged-in-page')
         .page.logout().logout()
