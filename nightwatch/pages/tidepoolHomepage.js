@@ -38,7 +38,7 @@ module.exports = {
         followUsFacebookLink: {
             selector: 'a[href="https://www.facebook.com/TidepoolOrg"]'
         },
-        followUsYoutubeLink: {
+        followUsYouTubeLink: {
             selector: 'a[href="https://www.youtube.com/channel/UCsICBdq6SUXGiRr-zaGI4ig"]'
         }
     },
@@ -58,7 +58,7 @@ module.exports = {
                 .assert.elementPresent('@contactUsLink')
                 .assert.elementPresent('@followUsTwitterLink')
                 .assert.elementPresent('@followUsFacebookLink')
-                .assert.elementPresent('@followUsYoutubeLink')
+                .assert.elementPresent('@followUsYouTubeLink')
                 .pauseAndSaveScreenshot(1000, 'tidepool-homepage.png');
             
             return this.api;

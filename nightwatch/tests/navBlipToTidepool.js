@@ -2,21 +2,21 @@
 
 module.exports = {navBlipToTidepool : function (browser) {
     
-    var tidepoolHomepageLink =
-        browser.page.loginPage().elements.tidepoolHomepageLink.selector;
+    var tidepoolHomePageLink =
+        browser.page.loginPage().elements.tidepoolHomePageLink.selector;
     
     browser
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-        .waitForElementPresent(tidepoolHomepageLink)
+        .waitForElementPresent(tidepoolHomePageLink)
         .pauseAndSaveScreenshot(5000, 'blip-login-page')
-        .click(tidepoolHomepageLink)
+        .click(tidepoolHomePageLink)
         .windowHandles(function (window) {
             this.verify.equal(window.value.length, 2,
                 'There should be 2 windows open');
             this.switchWindow(window.value[1]);
             this.verify.urlContains('http://tidepool.org/');
         })
-        .page.tidepoolHomepage().assertLinks()
+        .page.tidepoolHomePage().assertLinks()
         .end();
     }
 };
