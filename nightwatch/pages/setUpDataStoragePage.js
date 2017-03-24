@@ -40,23 +40,37 @@ module.exports = {
     },
     
     commands: [{
-        setUpDataStorage: function (setUpDSAForMe, pwdBirthday, diagnosisDate, pwdFullName) {      
+        setUpDataStorageForMe: function (pwdBirthday, diagnosisDate, pwdFullName) {
+            this.setUpDataStorage(true, pwdBirthday, diagnosisDate, pwdFullName);
+            return this.api;
+        }
+    },
+    {
+        setUpDataStorageForSomeoneElse: function (pwdBirthday, diagnosisDate, pwdFullName) {
+            this.setUpDataStorage(false, pwdBirthday, diagnosisDate, pwdFullName);
+            return this.api;
+        }
+    },
+    {
+        setUpDataStorage: function (setUpDSAForMe, pwdBirthday, pwdDiagnosisDate, pwdFullName) {
             var self = this;
             var birthDate = moment(pwdBirthday);
-            var diagnosisDate = moment(diagnosisDate);
+            var diagnosisDate = moment(pwdDiagnosisDate);
             
             self.waitForElementPresent('@dataStorageForMeCheckbox')
                 .api.perform(function () {
                     if (setUpDSAForMe) {
                         self.click('@dataStorageForMeCheckbox');
                     } else {
+                        self.api.pause(1000)
                         self
                             .click('@dataStorageForSomeoneElseCheckbox')
-                            .setValue('@fullNameField', pwdFullName);
+                            .setValue('@fullNameField', pwdFullName)
                     }
                 })
+            
             self
-                .setValue('@aboutField', 'I am a fake person')
+                .setValue('@aboutField', self.api.globals.characters["fake-person"].about)
                 .setValue('@birthdayMonth', birthDate.format('MMMM'))
                 .setValue('@birthdayDay', birthDate.format('D'))
                 .setValue('@birthdayYear', birthDate.format('YYYY'))
@@ -65,6 +79,7 @@ module.exports = {
                 .setValue('@diagnosisDateYear', diagnosisDate.format('YYYY'))
                 .pauseAndSaveScreenshot(5000, 'set-up-data-storage-page')
                 .click('@submitButton')
+            
             return self.api;
         }
     }]

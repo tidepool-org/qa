@@ -31,9 +31,11 @@ module.exports = {
                         self.click('@age13to17RadioButton');
                     }
                 })
+            
             self
                 .pauseAndSaveScreenshot(10000, 'select-age-page')
                 .click('@submitButton')
+            
             return self.api;
         }
     }]

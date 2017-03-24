@@ -2,6 +2,9 @@
 
 module.exports = {
     elements: {
+        acceptInviteButton: {
+            selector: 'button.invitation-action-submit'
+        },
         setUpDataSubmitButtonNo: {
             selector: 'button.btn.btn-tertiary'
         },
@@ -11,6 +14,16 @@ module.exports = {
     },
     
     commands: [{
+        acceptInviteToViewData: function () {
+            this.api.pause(1000)
+            this
+                .waitForElementPresent('@acceptInviteButton')
+                .click('@acceptInviteButton');
+
+            return this.api;
+        }
+    },
+    {
         setUpData: function (setUpData) {      
             var self = this;
             
@@ -23,8 +36,10 @@ module.exports = {
                     } else {
                         self.click('@setUpDataSubmitButtonNo');
                     }
-                })
+                });
+            
             return self.api;
         }
+        
     }]
 };

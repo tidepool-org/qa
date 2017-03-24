@@ -9,7 +9,8 @@ module.exports = {loginRememberNo : function (browser) {
         .page.loginPage().signIn(userEmail, false)
         .waitForElementPresent('.Navbar-loggedInAs')
         .pauseAndSaveScreenshot(10000, 'blip-logged-in-page')
-        .page.logout().logout()
+        .pause(5000)
+        .page.logout().logoutEmailVerified()
         .end();
     }
 };

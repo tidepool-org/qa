@@ -11,11 +11,14 @@ module.exports = {
     },
     
     commands: [{
-        logout: function () {
+        logoutEmailVerified: function () {
             this
+                .waitForElementPresent('@menuDropdown')
                 .click('@menuDropdown')
                 .pauseAndSaveScreenshot(5000, 'logging-out')
                 .click('@menuLogout')
+                .api.pause(2000)
+            
             return this.api;
         }
     }]

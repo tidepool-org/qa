@@ -23,6 +23,19 @@ module.exports = {
     },
     
     commands: [{
+        
+        signInAndRememberMe: function (userEmail) {
+            this.signIn(userEmail, true);
+            return this.api;
+        }
+    },
+    {
+        signInAndDoNotRememberMe: function (userEmail) {
+            this.signIn(userEmail, false);
+            return this.api;
+        }
+    },
+    {
         signIn: function (userEmail, remember) {
             var self = this;
 
@@ -42,10 +55,11 @@ module.exports = {
         }
     },
     {
-        confirmInvalidLogin: function () {
+        confirmInvalidLogin: function (userName) {
             this
                 .waitForElementPresent('@notification')
-                .assert.containsText('@notification', 'Wrong username or password.', 'User (likely) deleted')
+                .assert.containsText('@notification', 'Wrong username or password.',
+                    'User ' + userName + ' (likely) deleted')
             return this.api;
         }
     }]
