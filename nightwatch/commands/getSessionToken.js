@@ -1,9 +1,8 @@
 'use strict';
 
 exports.command = function () {
-    var self = this;
     
-    self
+    this
         .pause(1000)
         .execute(
             function () {
@@ -11,9 +10,9 @@ exports.command = function () {
                 return sessionToken;
             },
             function (result) {
-                self.globals.sessionToken = result.value;
+                this.globals.sessionToken = result.value;
             }
         );
     
-    return self;
+    return this;
 };

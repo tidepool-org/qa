@@ -2,17 +2,17 @@
 
 module.exports = {
     elements: {
-        setupDataStorageLink: {
+        setupDSALink: {
             selector: 'a[href="/patients/new"]'
         }
     },
     
     commands: [{
-        setUpDataStorage: function () {
+        setupDSA: function () {
             this
-                .waitForElementPresent('@setupDataStorageLink')
+                .waitForElementPresent('@setupDSALink')
                 .pauseAndSaveScreenshot(5000, 'setup-data-storage-option')
-                .click('@setupDataStorageLink')
+                .click('@setupDSALink')
             return this.api;
         }
     }]

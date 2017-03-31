@@ -4,10 +4,10 @@ var moment = require('moment');
 
 module.exports = {
     elements: {
-        dataStorageForMeCheckbox: {
+        DSAForMeCheckbox: {
             selector: '#isOtherPerson0'
         },
-        dataStorageForSomeoneElseCheckbox: {
+        DSAForSomeoneElseCheckbox: {
             selector: '#isOtherPerson1'
         },
         fullNameField: {
@@ -40,32 +40,22 @@ module.exports = {
     },
     
     commands: [{
-        setUpDataStorageForMe: function (pwdBirthday, diagnosisDate, pwdFullName) {
-            this.setUpDataStorage(true, pwdBirthday, diagnosisDate, pwdFullName);
-            return this.api;
-        }
-    },
-    {
-        setUpDataStorageForSomeoneElse: function (pwdBirthday, diagnosisDate, pwdFullName) {
-            this.setUpDataStorage(false, pwdBirthday, diagnosisDate, pwdFullName);
-            return this.api;
-        }
-    },
-    {
-        setUpDataStorage: function (setUpDSAForMe, pwdBirthday, pwdDiagnosisDate, pwdFullName) {
+        setupDSA: function (userName, pwd) {
             var self = this;
-            var birthDate = moment(pwdBirthday);
-            var diagnosisDate = moment(pwdDiagnosisDate);
-            
-            self.waitForElementPresent('@dataStorageForMeCheckbox')
+            var now = moment.utc();
+            var pwdIsUser = userName === pwd;
+            var birthDate = moment(now).subtract(self.api.globals.characters[pwd].age, 'years');
+            var diagnosisDate = moment(now).subtract(self.api.globals.characters[pwd].diagnosisAge, 'years');
+
+            self.waitForElementPresent('@DSAForMeCheckbox')
                 .api.perform(function () {
-                    if (setUpDSAForMe) {
-                        self.click('@dataStorageForMeCheckbox');
+                    if (pwdIsUser) {
+                        self.click('@DSAForMeCheckbox');
                     } else {
                         self.api.pause(1000)
                         self
-                            .click('@dataStorageForSomeoneElseCheckbox')
-                            .setValue('@fullNameField', pwdFullName)
+                            .click('@DSAForSomeoneElseCheckbox')
+                            .setValue('@fullNameField', pwd)
                     }
                 })
             

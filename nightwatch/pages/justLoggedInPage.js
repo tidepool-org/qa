@@ -5,10 +5,10 @@ module.exports = {
         acceptInviteButton: {
             selector: 'button.invitation-action-submit'
         },
-        setUpDataSubmitButtonNo: {
+        setupDataSubmitButtonNo: {
             selector: 'button.btn.btn-tertiary'
         },
-        setUpDataSubmitButtonYes: {
+        setupDataSubmitButtonYes: {
             selector: 'button.btn.btn-primary'
         }
     },
@@ -24,17 +24,17 @@ module.exports = {
         }
     },
     {
-        setUpData: function (setUpData) {      
+        setupData: function (setupDataBoolean) {      
             var self = this;
             
             self
-                .waitForElementPresent('@setUpDataSubmitButtonYes')
+                .waitForElementPresent('@setupDataSubmitButtonYes')
                 .pauseAndSaveScreenshot(10000, 'do-you-want-to-set-up-data-page')
                 .api.perform(function () {
-                    if (setUpData) {
-                        self.click('@setUpDataSubmitButtonYes');
+                    if (setupDataBoolean) {
+                        self.click('@setupDataSubmitButtonYes');
                     } else {
-                        self.click('@setUpDataSubmitButtonNo');
+                        self.click('@setupDataSubmitButtonNo');
                     }
                 });
             
