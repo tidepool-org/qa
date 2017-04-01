@@ -12,7 +12,8 @@ module.exports = {
             this
                 .waitForElementPresent('@setupDSALink')
                 .pauseAndSaveScreenshot(5000, 'setup-data-storage-option')
-                .click('@setupDSALink')
+                .click('@setupDSALink');
+            
             return this.api;
         }
     }]

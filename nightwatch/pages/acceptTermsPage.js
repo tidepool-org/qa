@@ -13,20 +13,21 @@ module.exports = {
         }
     },
     commands: [{
-        acceptTerms: function (userAge) {       
+        acceptTerms: function (character) {
             var self = this;
             
             self
                 .waitForElementPresent('@agreedCheckbox')
                 .click('@agreedCheckbox')
                 .api.perform(function () {
-                    if (userAge < 18) {
+                    if (character.age < 18) {
                         self.click('@agreedOnBehalfCheckbox');
                     }
-                })
+                });
             self
                 .pauseAndSaveScreenshot(10000, 'agree-to-terms-page')
-                .click('@submitButton')
+                .click('@submitButton');
+            
             return self.api;
         }
     }]

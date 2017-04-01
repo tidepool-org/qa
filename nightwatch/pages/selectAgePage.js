@@ -17,24 +17,23 @@ module.exports = {
     },
     
     commands: [{
-        selectAge: function (userAge) { 
+        selectAge: function (character) {
             var self = this;
             
             self
                 .waitForElementPresent('@ageGTE18RadioButton')
                 .api.perform(function () {
-                    if (userAge >= 18) {
+                    if (character.age >= 18) {
                         self.click('@ageGTE18RadioButton');
-                    } else if (userAge <= 12) {
+                    } else if (character.age <= 12) {
                         self.click('@ageLTE12RadioButton');
                     } else {
                         self.click('@age13to17RadioButton');
                     }
-                })
-            
+                });
             self
                 .pauseAndSaveScreenshot(10000, 'select-age-page')
-                .click('@submitButton')
+                .click('@submitButton');
             
             return self.api;
         }

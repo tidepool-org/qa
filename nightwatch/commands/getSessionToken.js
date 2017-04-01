@@ -1,6 +1,6 @@
 'use strict';
 
-exports.command = function () {
+exports.command = function (character) {
     
     this
         .pause(1000)
@@ -10,7 +10,7 @@ exports.command = function () {
                 return sessionToken;
             },
             function (result) {
-                this.globals.sessionToken = result.value;
+                this.globals.characters[character.nickname].sessionToken = result.value;
             }
         );
     

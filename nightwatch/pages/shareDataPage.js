@@ -14,19 +14,19 @@ module.exports = {
     },
     
     commands: [{
-        shareDataAllowUpload: function (userName) {
-            this.shareDataWith(userName, true);
+        shareDataAllowUpload: function (character) {
+            this.shareDataWith(character, true);
             return this.api;
         }
     },
     {
-        shareDataDoNotAllowUpload: function (userName) {
-            this.shareDataWith(userName, false);
+        shareDataDoNotAllowUpload: function (character) {
+            this.shareDataWith(character, false);
             return this.api;
-        }   
+        }
     },
     {
-        shareDataWith: function (userName, allowUpload) {
+        shareDataWith: function (character, allowUpload) {
             var self = this;
             
             self
@@ -34,29 +34,24 @@ module.exports = {
                 .click('@shareDataButton')
                 .waitForElementPresent('@shareEmailAddress')
                 .api
-                    .perform(
-                        function () {
-                            self.setValue('@shareEmailAddress', self.api.globals.characters[userName].userEmail)
-                        }
-                    )
+                    .perform(function () {
+                        self.setValue('@shareEmailAddress', character.emailAddress);
+                    })
                     .pause(1000) //give blip time to check the checkbox
                     .perform(function () {
                         if (allowUpload) {
-                            self.api.execute(
-                                function () {
-                                    return document.getElementsByClassName("input-group-checkbox-control")[0].checked = true;
-                                }
-                            )
+                            self.api.execute(function () {
+                                return document.getElementsByClassName(
+                                    "input-group-checkbox-control")[0].checked = true;
+                            })
                         } else {
-                            self.api.execute(
-                                function () {
-                                    return document.getElementsByClassName("input-group-checkbox-control")[0].checked = false;
-                                }
-                            )
+                            self.api.execute(function () {
+                                return document.getElementsByClassName(
+                                    "input-group-checkbox-control")[0].checked = false;
+                            })
                         }
-                    })
-            
-            self.click('@inviteButton')
+                    });
+            self.click('@inviteButton');
 
             return self.api;
         }

@@ -2,20 +2,19 @@
 
 var request = require('superagent');
 
-exports.command = function () {
-    var self = this;
+exports.command = function (character) {
     
-    self
+    this
         .perform(function () {
             request
                 .delete(process.env.TIDEPOOL_BLIP_API_URL +
-                    '/userservices/v1/users/' + self.globals.userID)
-                .send({ password: process.env.TIDEPOOL_BLIP_USER_PASSWORD })
-                .set('X-Tidepool-Session-Token', self.globals.sessionToken)
+                    '/userservices/v1/users/' + character.userID)
+                .send({ password: character.password })
+                .set('X-Tidepool-Session-Token', character.sessionToken)
                 .set('Accept', 'application/json')
                 .end();
         })
-        .pause(2000)
+        .pause(2000);
     
-    return self;
+    return this;
 };

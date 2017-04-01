@@ -1,12 +1,12 @@
 "use strict";
 
 module.exports = {loginRememberNo : function (browser) {
-    var userEmail = 'nightwatch+hasData1+' +
-        process.env.TIDEPOOL_BLIP_USER_SKIP_KEY + '@tidepool.org';
+
+    var staticUser = browser.globals.characters.staticUser;
     
     browser
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-        .page.loginPage().signIn(userEmail, false)
+        .page.loginPage().signInAndDoNotRememberMe(staticUser)
         .waitForElementPresent('.Navbar-loggedInAs')
         .pauseAndSaveScreenshot(10000, 'blip-logged-in-page')
         .pause(5000)

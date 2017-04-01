@@ -5,42 +5,52 @@ var moment = require('moment');
 module.exports = {signupNewUsers_setupDSA_shareData :
     function (browser) {
         
+        var characters = browser.globals.characters;
+        var patty = characters.patty;
+        var candice = characters.candice;
+        var rebecca = characters.rebecca;
+        var doctor = characters.doctor;
+        
         browser
-        // create the users in the workflow
-            .createNewUser('patty-g-fisher') 
-            .createNewUser('rebecca-d-fisher')
-            .createNewUser('doctor-n-trees')
-        //patty fisher 
-            .signUpNewUser('patty-g-fisher')
-            //sets up data for her daughter candice
-            .page.justLoggedInPage().setUpData(true)
-            .setUpDSA('patty-g-fisher', 'candice-d-fisher')
-            //invites dr. trees and her sister-in-law rebecca to view the data
+        // initialize the users (characters) in the workflow (story)
+            .initializeNewUser(patty) 
+            .initializeNewUser(rebecca)
+            .initializeNewUser(doctor)
+        
+        // patty fisher 
+            .signUpNewUser(patty)
+            //set up data for her daughter candice
+            .page.justLoggedInPage().setupData(true)
+            .page.setupDSAPage().setupDSA(patty, candice)
+            //invite dr. trees and her sister-in-law rebecca to view the data
             .page.viewDataPage().shareData()
-            .page.shareDataPage().shareDataDoNotAllowUpload('rebecca-d-fisher')
-            .page.shareDataPage().shareDataAllowUpload('doctor-n-trees')
+            .page.shareDataPage().shareDataDoNotAllowUpload(rebecca)
+            .page.shareDataPage().shareDataAllowUpload(doctor)
             .page.viewDataPage().logout()
+        
         // rebecca fisher 
-            .signUpNewUser('rebecca-d-fisher')
+            .signUpNewUser(rebecca)
             // agrees to see candice's data
             .page.justLoggedInPage().acceptInviteToViewData()
             // set up DSA for herself
             .page.viewDataPage().goToCareTeam()
-            .page.careTeamPage().setUpDataStorage()
-            .setUpDSA('rebecca-d-fisher', 'rebecca-d-fisher')
+            .page.careTeamPage().setupDSA()
+            .page.setupDSAPage().setupDSA(rebecca, rebecca)
             // invite dr. trees to view data
             .page.viewDataPage().shareData()
-            .page.shareDataPage().shareDataDoNotAllowUpload('doctor-n-trees')
+            .page.shareDataPage().shareDataDoNotAllowUpload(doctor)
             .page.viewDataPage().logout()
+        
         // dr. trees signs up to view candice's and rebecca's data
-            .signUpNewUser('doctor-n-trees')
+            .signUpNewUser(doctor)
             .page.justLoggedInPage().acceptInviteToViewData()
             .page.justLoggedInPage().acceptInviteToViewData()
             .page.viewDataPage().logout()
+        
         // delete users
-            .deleteUser('doctor-n-trees')
-            .deleteUser('rebecca-d-fisher')
-            .deleteUser('patty-g-fisher')
+            .deleteUser(doctor)
+            .deleteUser(rebecca)
+            .deleteUser(patty)
             .end();
     }
 };

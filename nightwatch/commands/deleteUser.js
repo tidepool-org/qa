@@ -1,21 +1,20 @@
 'use strict';
 
-exports.command = function (userName) {
-    var userEmail = this.globals.characters[userName].userEmail;
+exports.command = function (character) {
         
     this
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-        .page.loginPage().signInAndRememberMe(userEmail)
+        .page.loginPage().signInAndRememberMe(character)
         .waitForElementPresent('.Navbar-loggedInAs')
-        .getSessionToken()
-        .getUserID()
-        .sendDeleteUserRequest()
+        .getSessionToken(character)
+        .getUserID(character)
+        .sendDeleteUserRequest(character)
         .page.viewDataPage().logout()
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-        .page.loginPage().signInAndDoNotRememberMe(userEmail)
-        .page.loginPage().confirmInvalidLogin(userName)
+        .page.loginPage().signInAndDoNotRememberMe(character)
+        .page.loginPage().confirmInvalidLogin(character)
         .pause(3000)
-        .pauseAndSaveScreenshot(2000, 'confirm-' + userName + '-deleted');
+        .pauseAndSaveScreenshot(2000, 'confirm-' + character.nickname + '-deleted');
     
     return this;
 };

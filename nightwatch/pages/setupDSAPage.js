@@ -40,27 +40,27 @@ module.exports = {
     },
     
     commands: [{
-        setupDSA: function (userName, pwd) {
+        setupDSA: function (user, pwd) {
             var self = this;
             var now = moment.utc();
-            var pwdIsUser = userName === pwd;
-            var birthDate = moment(now).subtract(self.api.globals.characters[pwd].age, 'years');
-            var diagnosisDate = moment(now).subtract(self.api.globals.characters[pwd].diagnosisAge, 'years');
+            var pwdIsUser = user.fullName === pwd.fullName;
+            var birthDate = moment(now).subtract(pwd.age, 'years');
+            var diagnosisDate = moment(now).subtract(pwd.diagnosisAge, 'years');
 
-            self.waitForElementPresent('@DSAForMeCheckbox')
+            self
+                .waitForElementPresent('@DSAForMeCheckbox')
                 .api.perform(function () {
                     if (pwdIsUser) {
                         self.click('@DSAForMeCheckbox');
                     } else {
-                        self.api.pause(1000)
+                        self.api.pause(1000);
                         self
                             .click('@DSAForSomeoneElseCheckbox')
-                            .setValue('@fullNameField', pwd)
+                            .setValue('@fullNameField', pwd.fullName);
                     }
-                })
-            
+                });
             self
-                .setValue('@aboutField', self.api.globals.characters["fake-person"].about)
+                .setValue('@aboutField', user.about)
                 .setValue('@birthdayMonth', birthDate.format('MMMM'))
                 .setValue('@birthdayDay', birthDate.format('D'))
                 .setValue('@birthdayYear', birthDate.format('YYYY'))
@@ -68,7 +68,7 @@ module.exports = {
                 .setValue('@diagnosisDateDay', diagnosisDate.format('D'))
                 .setValue('@diagnosisDateYear', diagnosisDate.format('YYYY'))
                 .pauseAndSaveScreenshot(5000, 'set-up-data-storage-page')
-                .click('@submitButton')
+                .click('@submitButton');
             
             return self.api;
         }

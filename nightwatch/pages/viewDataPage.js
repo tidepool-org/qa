@@ -9,7 +9,7 @@ module.exports = {
         careTeamLink: {
             locateStrategy: 'css',
             selector: 'i.Navbar-icon.icon-careteam'
-        },        
+        },
         emailNotVerifiedPopUp: {
             locateStrategy: 'xpath',
             selector: '//*[@id="app"]/div/div/div[2]/div/a'
@@ -24,14 +24,12 @@ module.exports = {
     
     commands: [{
         shareData: function () {
-            var self = this;
-            
-            self
+            this
                 .waitForElementPresent('@shareDataLink')
-                .closeEmailNotVerifiedPopUp()
-            self.click('@shareDataLink')
+                .closeEmailNotVerifiedPopUp();
+            this.click('@shareDataLink');
 
-            return self.api;
+            return this.api;
         }
     },
     {
@@ -39,47 +37,43 @@ module.exports = {
             var self = this;
              
             // NOTE: this is not working correctly if email has been verified, 
-            // that is, if the pop up is NOT there. Others have complained
-            // about this issue, and have suggested more complicated workarounds.
-            // Once we get email verification in the workflow, this issue will
-            // need to be worked out. 
+            // that is, if the pop up is NOT there. Other nightwatch users have
+            // complained about this issue, and have suggested more complicated
+            // workarounds. Once we get email verification in the workflow, this
+            // issue will need to be worked out. 
             self.api
                     .pause(1000)
                     .perform(function () {
                         if (self.isVisible('@emailNotVerifiedPopUp')) {
                             self.click('@emailNotVerifiedPopUp');
                         }
-                    })
+                    });
 
-            return self.api;
-        }       
-    },
-    {
-        logout: function () {
-            var self = this;
-            
-            self
-                .waitForElementPresent('@menuDropdown')
-                .closeEmailNotVerifiedPopUp()
-            self
-                .click('@menuDropdown')
-                .pauseAndSaveScreenshot(5000, 'logging-out')
-                .click('@menuLogout')
-                .api.pause(5000)
-            
             return self.api;
         }
     },
     {
-        goToCareTeam: function () {
-            var self = this;
+        logout: function () {
+            this
+                .waitForElementPresent('@menuDropdown')
+                .closeEmailNotVerifiedPopUp();
+            this
+                .click('@menuDropdown')
+                .pauseAndSaveScreenshot(5000, 'logging-out')
+                .click('@menuLogout')
+                .api.pause(5000);
             
-            self
+            return this.api;
+        }
+    },
+    {
+        goToCareTeam: function () {
+            this
                 .waitForElementPresent('@careTeamLink')
-                .closeEmailNotVerifiedPopUp()
-            self.click('@careTeamLink')
+                .closeEmailNotVerifiedPopUp();
+            this.click('@careTeamLink');
 
-            return self.api;
+            return this.api;
         }
         
     }]
