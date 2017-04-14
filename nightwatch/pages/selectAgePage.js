@@ -17,15 +17,15 @@ module.exports = {
     },
     
     commands: [{
-        selectAge: function (character) {
+        selectAge: function (user) {
             var self = this;
             
             self
                 .waitForElementPresent('@ageGTE18RadioButton')
                 .api.perform(function () {
-                    if (character.age >= 18) {
+                    if (user.age >= 18) {
                         self.click('@ageGTE18RadioButton');
-                    } else if (character.age <= 12) {
+                    } else if (user.age <= 12) {
                         self.click('@ageLTE12RadioButton');
                     } else {
                         self.click('@age13to17RadioButton');

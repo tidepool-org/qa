@@ -5,7 +5,7 @@ var moment = require('moment');
 module.exports = {
     "waitForConditionTimeout": 10000,
     "timeTestStarted": moment.utc().format('YYYYMMDDTHH.mm.ss.SSS'),
-    "characters": {
+    "users": {
         "staticUser": {
             "nickname":"staticUser",
             "emailAddress":"nightwatch+hasData1+" //NOTE: this will be changing soon

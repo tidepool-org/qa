@@ -26,13 +26,13 @@ module.exports = {
     },
     
     commands: [{
-        enterUserCredentials: function (character) {
+        enterUserCredentials: function (user) {
             this
                 .waitForElementPresent('@fullNameField')
-                .setValue('@fullNameField', character.fullName)
-                .setValue('@usernameField', character.emailAddress)
-                .setValue('@passwordField', character.password)
-                .setValue('@passwordConfirmField', character.password)
+                .setValue('@fullNameField', user.fullName)
+                .setValue('@usernameField', user.emailAddress)
+                .setValue('@passwordField', user.password)
+                .setValue('@passwordConfirmField', user.password)
                 .pauseAndSaveScreenshot(5000, 'blip-signup-new-user-page')
                 .click('@submitButton')
                 .waitForElementPresent('.EmailVerification-title')

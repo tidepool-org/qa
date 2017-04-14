@@ -1,20 +1,20 @@
 'use strict';
 
-exports.command = function (character) {
+exports.command = function (user) {
         
     this
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-        .page.loginPage().signInAndRememberMe(character)
+        .page.loginPage().signInAndRememberMe(user)
         .waitForElementPresent('.Navbar-loggedInAs')
-        .getSessionToken(character)
-        .getUserID(character)
-        .sendDeleteUserRequest(character)
+        .getSessionToken(user)
+        .getUserID(user)
+        .sendDeleteUserRequest(user)
         .page.viewDataPage().logout()
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-        .page.loginPage().signInAndDoNotRememberMe(character)
-        .page.loginPage().confirmInvalidLogin(character)
+        .page.loginPage().signInAndDoNotRememberMe(user)
+        .page.loginPage().confirmInvalidLogin(user)
         .pause(3000)
-        .pauseAndSaveScreenshot(2000, 'confirm-' + character.nickname + '-deleted');
+        .pauseAndSaveScreenshot(2000, 'confirm-' + user.nickname + '-deleted');
     
     return this;
 };

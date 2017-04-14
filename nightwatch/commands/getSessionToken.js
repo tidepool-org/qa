@@ -1,16 +1,15 @@
 'use strict';
 
-exports.command = function (character) {
+exports.command = function (user) {
     
     this
         .pause(1000)
         .execute(
             function () {
-                var sessionToken = localStorage.getItem('authToken');
-                return sessionToken;
+                return localStorage.getItem('authToken');
             },
             function (result) {
-                this.globals.characters[character.nickname].sessionToken = result.value;
+                this.globals.users[user.nickname].sessionToken = result.value;
             }
         );
     

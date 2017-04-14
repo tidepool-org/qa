@@ -2,7 +2,7 @@
 
 module.exports = {loginRememberNo : function (browser) {
 
-    var staticUser = browser.globals.characters.staticUser;
+    var staticUser = browser.globals.users.staticUser;
     
     browser
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)

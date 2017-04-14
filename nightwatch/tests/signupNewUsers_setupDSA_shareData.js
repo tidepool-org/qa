@@ -5,14 +5,14 @@ var moment = require('moment');
 module.exports = {signupNewUsers_setupDSA_shareData :
     function (browser) {
         
-        var characters = browser.globals.characters;
-        var patty = characters.patty;
-        var candice = characters.candice;
-        var rebecca = characters.rebecca;
-        var doctor = characters.doctor;
+        var users = browser.globals.users;
+        var patty = users.patty;
+        var candice = users.candice;
+        var rebecca = users.rebecca;
+        var doctor = users.doctor;
         
         browser
-        // initialize the users (characters) in the workflow (story)
+        // initialize the users (users) in the workflow (story)
             .initializeNewUser(patty) 
             .initializeNewUser(rebecca)
             .initializeNewUser(doctor)

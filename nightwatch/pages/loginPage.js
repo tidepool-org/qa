@@ -24,25 +24,25 @@ module.exports = {
     
     commands: [{
         
-        signInAndRememberMe: function (character) {
-            this.signIn(character, true);
+        signInAndRememberMe: function (user) {
+            this.signIn(user, true);
             return this.api;
         }
     },
     {
-        signInAndDoNotRememberMe: function (character) {
-            this.signIn(character, false);
+        signInAndDoNotRememberMe: function (user) {
+            this.signIn(user, false);
             return this.api;
         }
     },
     {
-        signIn: function (character, remember) {
+        signIn: function (user, remember) {
             var self = this;
 
             self
                 .waitForElementPresent('@usernameField')
-                .setValue('@usernameField', character.emailAddress)
-                .setValue('@passwordField', character.password)
+                .setValue('@usernameField', user.emailAddress)
+                .setValue('@passwordField', user.password)
                 .api.perform(function () {
                     if (remember) {
                         self.click('@rememberCheckbox');
@@ -56,11 +56,11 @@ module.exports = {
         }
     },
     {
-        confirmInvalidLogin: function (character) {
+        confirmInvalidLogin: function (user) {
             this
                 .waitForElementPresent('@notification')
                 .assert.containsText('@notification', 'Wrong username or password.',
-                    'User ' + character.fullName + ' (likely) deleted');
+                    'User ' + user.fullName + ' (likely) deleted');
             
             return this.api;
         }

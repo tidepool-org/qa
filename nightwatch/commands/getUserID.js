@@ -2,7 +2,7 @@
 
 var request = require('superagent');
 
-exports.command = function (character) {
+exports.command = function (user) {
     var self = this;
     
     self
@@ -11,10 +11,10 @@ exports.command = function (character) {
             request
                 .get(process.env.TIDEPOOL_BLIP_API_URL +
                     'auth/login')
-                .set('X-Tidepool-Session-Token', character.sessionToken)
+                .set('X-Tidepool-Session-Token', user.sessionToken)
                 .set('Accept', 'application/json')
                 .end(function (error, result) {
-                    self.globals.characters[character.nickname].userID =
+                    self.globals.users[user.nickname].userID =
                         JSON.parse(result.text).userid;
                 });
         })

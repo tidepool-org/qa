@@ -14,19 +14,19 @@ module.exports = {
     },
     
     commands: [{
-        shareDataAllowUpload: function (character) {
-            this.shareDataWith(character, true);
+        shareDataAllowUpload: function (user) {
+            this.shareDataWith(user, true);
             return this.api;
         }
     },
     {
-        shareDataDoNotAllowUpload: function (character) {
-            this.shareDataWith(character, false);
+        shareDataDoNotAllowUpload: function (user) {
+            this.shareDataWith(user, false);
             return this.api;
         }
     },
     {
-        shareDataWith: function (character, allowUpload) {
+        shareDataWith: function (user, allowUpload) {
             var self = this;
             
             self
@@ -35,7 +35,7 @@ module.exports = {
                 .waitForElementPresent('@shareEmailAddress')
                 .api
                     .perform(function () {
-                        self.setValue('@shareEmailAddress', character.emailAddress);
+                        self.setValue('@shareEmailAddress', user.emailAddress);
                     })
                     .pause(1000) //give blip time to check the checkbox
                     .perform(function () {
