@@ -4,10 +4,10 @@ var moment = require('moment');
 
 module.exports = {
     elements: {
-        dataStorageForMeCheckbox: {
+        DSAForMeCheckbox: {
             selector: '#isOtherPerson0'
         },
-        dataStorageForSomeoneElseCheckbox: {
+        DSAForSomeoneElseCheckbox: {
             selector: '#isOtherPerson1'
         },
         fullNameField: {
@@ -40,23 +40,27 @@ module.exports = {
     },
     
     commands: [{
-        setUpDataStorage: function (setUpDSAForMe, pwdBirthday, diagnosisDate, pwdFullName) {      
+        setupDSA: function (user, pwd) {
             var self = this;
-            var birthDate = moment(pwdBirthday);
-            var diagnosisDate = moment(diagnosisDate);
-            
-            self.waitForElementPresent('@dataStorageForMeCheckbox')
-                .api.perform(function () {
-                    if (setUpDSAForMe) {
-                        self.click('@dataStorageForMeCheckbox');
-                    } else {
-                        self
-                            .click('@dataStorageForSomeoneElseCheckbox')
-                            .setValue('@fullNameField', pwdFullName);
-                    }
-                })
+            var now = moment.utc();
+            var pwdIsUser = user.fullName === pwd.fullName;
+            var birthDate = moment(now).subtract(pwd.age, 'years');
+            var diagnosisDate = moment(now).subtract(pwd.diagnosisAge, 'years');
+
             self
-                .setValue('@aboutField', 'I am a fake person')
+                .waitForElementPresent('@DSAForMeCheckbox')
+                .api.perform(function () {
+                    if (pwdIsUser) {
+                        self.click('@DSAForMeCheckbox');
+                    } else {
+                        self.api.pause(1000);
+                        self
+                            .click('@DSAForSomeoneElseCheckbox')
+                            .setValue('@fullNameField', pwd.fullName);
+                    }
+                });
+            self
+                .setValue('@aboutField', user.about)
                 .setValue('@birthdayMonth', birthDate.format('MMMM'))
                 .setValue('@birthdayDay', birthDate.format('D'))
                 .setValue('@birthdayYear', birthDate.format('YYYY'))
@@ -64,7 +68,8 @@ module.exports = {
                 .setValue('@diagnosisDateDay', diagnosisDate.format('D'))
                 .setValue('@diagnosisDateYear', diagnosisDate.format('YYYY'))
                 .pauseAndSaveScreenshot(5000, 'set-up-data-storage-page')
-                .click('@submitButton')
+                .click('@submitButton');
+            
             return self.api;
         }
     }]

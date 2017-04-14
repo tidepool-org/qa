@@ -35,7 +35,7 @@ start a local copy of blip.
 Here is an example of how to run one test:
 
 ```bash
-$ nightwatch tests/navBlipToTidepool.js
+$ nightwatch tests/loginRememberNo.js
 ```
 
 You can also run all of the tests in the nightwatch test folder:
@@ -50,7 +50,7 @@ Screenshots are used in two ways:
 
 1. Screenshots will be captured if a test fails, as specified in the
 nightwatch.conf.js file. Failed tests are stored in the
-nightwatch/screenshots/onTestFailure/ folder. NOTE: This functionality
+nightwatch/screenshots/failed/ folder. NOTE: This functionality
 is different than the saveScreenshots variable and pauseAndSaveScreenshot
 function that you will find in most tests.
 
@@ -60,7 +60,7 @@ key page states during the initial test-build, and can/should be used
 for debugging purposes. For example, if a test breaks the initial and
 periodic screen captures can be compared to the broken test screenshots.
 These screenshots are stored in the
-nightwatch/screenshots/detailedScreenCaptures/ folder.  These screenshots
+nightwatch/screenshots/detailed/ folder. These screenshots
 can be enabled by using the following flag/syntax:
 
 ```bash

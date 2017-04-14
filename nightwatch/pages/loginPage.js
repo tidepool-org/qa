@@ -23,29 +23,45 @@ module.exports = {
     },
     
     commands: [{
-        signIn: function (userEmail, remember) {
+        
+        signInAndRememberMe: function (user) {
+            this.signIn(user, true);
+            return this.api;
+        }
+    },
+    {
+        signInAndDoNotRememberMe: function (user) {
+            this.signIn(user, false);
+            return this.api;
+        }
+    },
+    {
+        signIn: function (user, remember) {
             var self = this;
 
             self
                 .waitForElementPresent('@usernameField')
-                .setValue('@usernameField', userEmail)
-                .setValue('@passwordField', process.env.TIDEPOOL_BLIP_USER_PASSWORD)
+                .setValue('@usernameField', user.emailAddress)
+                .setValue('@passwordField', user.password)
                 .api.perform(function () {
                     if (remember) {
                         self.click('@rememberCheckbox');
                     }
-                })
+                });
             self
                 .pauseAndSaveScreenshot(5000, 'blip-login-page')
-                .click('@submitButton')
+                .click('@submitButton');
+            
             return self.api;
         }
     },
     {
-        confirmInvalidLogin: function () {
+        confirmInvalidLogin: function (user) {
             this
                 .waitForElementPresent('@notification')
-                .assert.containsText('@notification', 'Wrong username or password.', 'User (likely) deleted')
+                .assert.containsText('@notification', 'Wrong username or password.',
+                    'User ' + user.fullName + ' (likely) deleted');
+            
             return this.api;
         }
     }]
