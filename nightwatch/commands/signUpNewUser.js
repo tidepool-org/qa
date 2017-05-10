@@ -8,7 +8,6 @@ exports.command = function (user) {
         .pause(3000)
         .page.signupPage().goToLoginPage()
         .page.loginPage().signInAndRememberMe(user)
-        .page.selectAgePage().selectAge(user)
         .page.acceptTermsPage().acceptTerms(user);
     
     return this;
