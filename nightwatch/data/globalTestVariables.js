@@ -8,7 +8,7 @@ module.exports = {
     "users": {
         "staticUser": {
             "nickname":"staticUser",
-            "emailAddress":"nightwatch+hasData1+" //NOTE: this will be changing soon
+            "emailAddress":"nightwatch+qa-testing-do-not-delete+" 
                 + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY + "@tidepool.org",
             "password":process.env.TIDEPOOL_BLIP_USER_PASSWORD,
         },
