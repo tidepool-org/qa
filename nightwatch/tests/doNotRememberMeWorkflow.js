@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = {loginRememberNo : function (browser) {
+module.exports = {doNotRememberMeWorkflow : function (browser) {
 
     var staticUser = browser.globals.users.staticUser;
     
@@ -9,8 +9,10 @@ module.exports = {loginRememberNo : function (browser) {
         .page.loginPage().signInAndDoNotRememberMe(staticUser)
         .waitForElementPresent('.Navbar-loggedInAs')
         .pauseAndSaveScreenshot(10000, 'blip-logged-in-page')
-        .pause(5000)
-        .page.logout().logoutEmailVerified()
+        .pause(10000)
+        .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
+        .page.loginPage().confirmOnLoginPage()
+        .pauseAndSaveScreenshot(10000, 'blip-login-page')
         .end();
     }
 };
