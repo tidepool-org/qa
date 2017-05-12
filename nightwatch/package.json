@@ -15,7 +15,7 @@
   "author": "Ed Nykaza",
   "license": "BSD-2-Clause",
   "engines": {
-    "node": "0.12.x",
+    "node": "6.10.x",
     "npm": "3.x"
   },
   "dependencies": {
