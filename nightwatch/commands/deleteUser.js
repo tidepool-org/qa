@@ -9,7 +9,7 @@ exports.command = function (user) {
         .getSessionToken(user)
         .getUserID(user)
         .sendDeleteUserRequest(user)
-        .page.viewDataPage().logout()
+        .page.dataPage().logout()
         .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
         .page.loginPage().signInAndDoNotRememberMe(user)
         .page.loginPage().confirmInvalidLogin(user)
