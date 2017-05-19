@@ -8,7 +8,15 @@ module.exports = {
     "users": {
         "staticUser": {
             "nickname":"staticUser",
+            "name":"general-user-account-for-qa-testing",
             "emailAddress":"nightwatch+qa-testing-do-not-delete+"
+                + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY + "@tidepool.org",
+            "password":process.env.TIDEPOOL_BLIP_USER_PASSWORD,
+        },
+        "staticClinician": {
+            "nickname":"staticClinician",
+            "name":"verified-clinician-account-for-qa-testing",
+            "emailAddress":"nightwatch+vca+qa-testing-do-not-delete+"
                 + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY + "@tidepool.org",
             "password":process.env.TIDEPOOL_BLIP_USER_PASSWORD,
         },
