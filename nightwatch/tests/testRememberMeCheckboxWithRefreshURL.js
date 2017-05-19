@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = {testRememberMeRefreshURLWorkflow : function (browser) {
+module.exports = {testRememberMeCheckboxWithRefreshURL : function (browser) {
 
     var staticUser = browser.globals.users.staticUser;
     
