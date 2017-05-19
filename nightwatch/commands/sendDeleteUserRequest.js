@@ -5,6 +5,8 @@ var request = require('superagent');
 exports.command = function (user) {
     
     this
+        .getSessionToken(user)
+        .getUserID(user)
         .perform(function () {
             request
                 .delete(process.env.TIDEPOOL_BLIP_API_URL +
