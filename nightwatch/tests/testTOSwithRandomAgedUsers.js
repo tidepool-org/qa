@@ -1,7 +1,7 @@
 "use strict";
 
-module.exports = {testTOSwithRandomAgedUsers :
-    function (browser) {
+module.exports = {
+    testTOSwithRandomAgedUsers : function (browser) {
         
         var tempUser = browser.globals.users.tempUser;
         

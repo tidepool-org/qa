@@ -1,9 +1,7 @@
 "use strict";
 
-var moment = require('moment');
-
-module.exports = {signupNewUsers_setupDSA_shareData :
-    function (browser) {
+module.exports = {
+    signupNewUsers_setupDSA_shareData : function (browser) {
         
         var users = browser.globals.users;
         var patty = users.patty;
@@ -13,7 +11,7 @@ module.exports = {signupNewUsers_setupDSA_shareData :
         
         browser
         // initialize the users (users) in the workflow (story)
-            .initializeNewUser(patty) 
+            .initializeNewUser(patty)
             .initializeNewUser(rebecca)
             .initializeNewUser(doctor)
         
