@@ -14,12 +14,18 @@ module.exports = {
             locateStrategy: 'xpath',
             selector: '//*[@id="app"]/div/div/div[2]/div/a'
         },
+        loggedInAs: {
+            selector: '.Navbar-loggedInAs'
+        },
         menuDropdown: {
             selector: '.Navbar-userName'
         },
         menuLogout: {
             selector: '.Navbar-menuDropdown > ul > li:nth-of-type(2) > a.Navbar-button > .Navbar-menuText'
-        }
+        },
+        refreshButton: {
+            selector: 'button.btn'
+        }        
     },
     
     commands: [{
@@ -50,6 +56,27 @@ module.exports = {
                     });
 
             return self.api;
+        }
+    },
+    {
+        confirmLoggedIn: function () {
+            this
+                .waitForElementPresent('@loggedInAs')
+                .pauseAndSaveScreenshot(10000, 'blip-logged-in-page');
+            
+            return this.api;
+        }
+    },
+    {
+        confirmOnDataPage: function () {
+            this.api.pause(10000) //wait for data to load
+            this
+                .waitForElementPresent('@refreshButton')
+                .pauseAndSaveScreenshot(5000, 'view-data-top-of-page')
+                .moveToElement('@refreshButton', 0, 0)
+                .pauseAndSaveScreenshot(5000, 'view-data-bottom-of-page');
+            
+            return this.api;
         }
     },
     {

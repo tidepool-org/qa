@@ -49,7 +49,7 @@ module.exports = {
                 } else {
                     self
                         .click('@ageLTE12RadioButton')
-                        .waitForElementPresent('@termsSorryMessage')       
+                        .waitForElementPresent('@termsSorryMessage');
                 } 
             });
             

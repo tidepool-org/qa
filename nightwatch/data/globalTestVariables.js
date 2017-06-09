@@ -8,15 +8,14 @@ module.exports = {
     "users": {
         "staticUser": {
             "nickname":"staticUser",
-            "emailAddress":"nightwatch+qa-testing-do-not-delete+" 
+            "emailAddress":"nightwatch+qa-testing-do-not-delete+"
                 + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY + "@tidepool.org",
             "password":process.env.TIDEPOOL_BLIP_USER_PASSWORD,
         },
-        "fake": {
-            "nickname":"fake",
-            "name":"fake-person",
-            "age":"19",
-            "about":"This is a fake person created for QA Testing.",
+        "tempUser": {
+            "nickname":"tempUser",
+            "name":"temporary-fake-user",
+            "about":"This is a fake person created for QA Testing. All tempUsers should be deleted after they are used for testing. If you find users in the database with this name, you are welcome to delete them.",
         },
         "patty": {
             "nickname":"patty",

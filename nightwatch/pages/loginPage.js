@@ -56,6 +56,13 @@ module.exports = {
         }
     },
     {
+        confirmOnLoginPage: function () {
+            this.waitForElementPresent('@rememberCheckbox');
+            
+            return this.api;
+        }
+    },
+    {
         confirmInvalidLogin: function (user) {
             this
                 .waitForElementPresent('@notification')
