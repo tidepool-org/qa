@@ -97,4 +97,3 @@ The following abbreviations are used to shorten the test names:
 | DSA | data storage account |
 | VCA  | verified clinician account |
 | TOS  | terms of service  |
-| 
