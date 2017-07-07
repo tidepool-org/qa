@@ -36,14 +36,14 @@ start a local copy of blip.
 
 The default test settings are specified in nightwatch.conf.js. There are
 also two other environments that can be specified: "debug" and "captureScreens."
-The following syntax is used to speficy the environment:
+The following syntax is used to specify the environment:
 
 ```bash
 $ nightwatch tests -e debug
 ```
 
 The "debug" environment can be used to recreate random variables, which 
-may be useful for debugging failed tests. You can speficy the random seed
+may be useful for debugging failed tests. You can specify the random seed
 in the nightwatch.conf.js file, and you can find the random seed that 
 corresponds to the failed test by grabbing the time stamp of the failed test,
 which is located here: /nightwatch/screenshots/failed/YYYYMMDDTHH.mm.ss.SSS
