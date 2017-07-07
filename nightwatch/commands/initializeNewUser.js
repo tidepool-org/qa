@@ -6,7 +6,7 @@ exports.command = function (user) {
     self.perform(function () {
         // todo: code could break if tests are run in parallel and the timeTestStarted
         // is exactly the same (down to the thousandths of a second). This can be fixed 
-        // adding a the PID or some other unique number to the end of fullName. For
+        // by adding the PID or some other unique number to the end of fullName. For
         // example, var fullName = ... + self.globals.timeTestStarted + <uniqueNumber>
         var fullName = process.env.TIDEPOOL_BLIP_EMAIL_LOCAL_PART + '+' +
             user.name + '+' + self.globals.timeTestStarted;
