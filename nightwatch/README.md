@@ -81,7 +81,7 @@ $ nightwatch tests
 ```
 
 You can also run tests in parallel. This example will start three
-instances of the test suite using the default envirnment:
+instances of the test suite using the default environment:
 
 ```bash
 $ nightwatch tests -e default,default,default
