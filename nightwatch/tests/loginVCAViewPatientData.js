@@ -3,7 +3,7 @@
 module.exports = {
     loginVCAViewPatientData : function (browser) {
 
-        var vca = browser.globals.users.staticClinician;
+        var vca = browser.globals.users.verifiedClinician;
 
         browser
             .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)

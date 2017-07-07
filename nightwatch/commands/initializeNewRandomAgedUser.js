@@ -8,22 +8,21 @@ exports.command = function (user) {
         self.globals.timeTestStarted;
     var rand = require('random-seed').create(randomSeed);
     var now = moment.utc();
-    var maxBirthday = moment(now).subtract(5, 'years');
-    var birthday = maxBirthday.subtract(rand.intBetween(0, 75 * 365), 'days');
+    
+    // randomly select age to be between 1 and 80 years old
+    var maxBirthday = moment(now).subtract(1, 'years');
+    var birthday = maxBirthday.subtract(rand.intBetween(0, 79 * 365), 'days');
     var age = moment(now).diff(birthday, 'years');
+    
+    // randomly select diagnosis date/age to be between now and birth date.
     var numberDaysAlive = moment(now).diff(birthday, 'days');
     var diagnosisDate = moment(now).subtract(rand.intBetween(0,
         numberDaysAlive), 'days');
     var diagnosisAge = moment(diagnosisDate).diff(birthday, 'years');
-    var fullName = 'nightwatch+' + user.name + '+' + self.globals.timeTestStarted;
     
     self.perform(function () {
 
-        self.globals.users[user.nickname].fullName = fullName;
-        self.globals.users[user.nickname].emailAddress = fullName + '+'
-            + process.env.TIDEPOOL_BLIP_USER_SKIP_KEY + '@tidepool.org';
-        self.globals.users[user.nickname].password =
-            process.env.TIDEPOOL_BLIP_USER_PASSWORD;
+        self.initializeNewUser(user);
         self.globals.users[user.nickname].birthday = birthday;
         self.globals.users[user.nickname].age = age;
         self.globals.users[user.nickname].diagnosisDate = diagnosisDate;
