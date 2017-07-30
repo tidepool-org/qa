@@ -4,7 +4,7 @@ exports.command = function (user) {
     var self = this;
     
     self.perform(function () {
-        // todo: code could break if tests are run in parallel and the timeTestStarted
+        // TODO: code could break if tests are run in parallel and the timeTestStarted
         // is exactly the same (down to the thousandths of a second). This can be fixed 
         // by adding the PID or some other unique number to the end of fullName. For
         // example, var fullName = ... + self.globals.timeTestStarted + <uniqueNumber>

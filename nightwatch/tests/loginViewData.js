@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 module.exports = {
     loginViewData : function (browser) {

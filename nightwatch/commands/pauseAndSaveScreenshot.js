@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 exports.command = function (pauseLengthMilliSeconds, screenshotName) {
     var self = this;
