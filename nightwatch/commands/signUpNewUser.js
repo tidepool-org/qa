@@ -2,17 +2,14 @@
 
 exports.command = function (user, vca) {
     
-    var inviteURL = process.env.TIDEPOOL_BLIP_LAUNCH_URL + 'signup/?inviteKey='
-            + process.env.TIDEPOOL_BLIP_USER_INVITE_KEY;
-    var accountType = 'personal';
-    
     if (typeof vca !== 'undefined') {
-        inviteURL = inviteURL + '&roles=clinic';
-        accountType = 'clinician';
+        var accountType = 'clinician';
+    } else {
+        var accountType = 'personal';  
     }
     
     this
-        .url(inviteURL)
+        .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL + 'signup/')
         .page.selectUserTypePage().selectAccountType(accountType)
         .page.signupPage().enterUserCredentials(user)
         .pause(3000)
