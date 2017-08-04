@@ -1,20 +1,20 @@
-"use strict";
+'use strict';
 
 module.exports = {
     testRememberMeCheckboxWithRefreshURL : function (browser) {
 
-        var staticUser = browser.globals.users.staticUser;
+        var generalUser = browser.globals.users.generalUser;
 
         browser
             .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-            .page.loginPage().signInAndDoNotRememberMe(staticUser)
+            .page.loginPage().signInAndDoNotRememberMe(generalUser)
             .waitForElementPresent('.Navbar-loggedInAs')
             .pauseAndSaveScreenshot(10000, 'blip-logged-in-page')
             .pause(10000)
             .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
             .page.loginPage().confirmOnLoginPage()
             .pauseAndSaveScreenshot(10000, 'blip-login-page')
-            .page.loginPage().signInAndRememberMe(staticUser)
+            .page.loginPage().signInAndRememberMe(generalUser)
             .waitForElementPresent('.Navbar-loggedInAs')
             .pauseAndSaveScreenshot(10000, 'blip-logged-in-again-page')
             .pause(10000)

@@ -1,12 +1,12 @@
 'use strict';
 
 module.exports = {
-    loginViewData : function (browser) {
-
+    loginVCAViewPatientData : function (browser) {
         browser
             .url(process.env.TIDEPOOL_BLIP_LAUNCH_URL)
-            .page.loginPage().signInAndRememberMe(browser.globals.users.generalUser)
+            .page.loginPage().signInAndRememberMe(browser.globals.users.verifiedClinician)
             .page.dataPage().confirmLoggedIn()
+            .page.patientsPage().viewPatientData()
             .page.dataPage().confirmOnDataPage()
             .page.logout().logoutEmailVerified()
             .end();

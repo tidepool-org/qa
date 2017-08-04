@@ -1,6 +1,6 @@
 # Nightwatch Tests
 
-Functional QA tests of Blip using Nightwatch.
+Functional QA tests for Blip using Nightwatch.
 
 ## Getting started
 
@@ -21,7 +21,7 @@ Next, install Nightwatch and it's dependencies:
 $ npm install
 ```
 
-## Specifying the environment
+## Specifying the Blip environment
 
 When running a Nightwatch test or test suite, you must first load in
 environmental variables. Please contact someone at Tidepool to request
@@ -32,10 +32,46 @@ integration (int), production (prd), and local environments.
 PLEASE NOTE: If you are going to run tests locally, you will need to
 start a local copy of blip.
 
-Here is an example of how to run one test:
+## Specifying the runtime environment
+
+The default test settings are specified in nightwatch.conf.js. There are
+also two other environments that can be specified: "debug" and "captureScreens."
+The following syntax is used to specify the environment:
 
 ```bash
-$ nightwatch tests/loginRememberNo.js
+$ nightwatch tests -e debug
+```
+
+The "debug" environment can be used to recreate random variables, which 
+may be useful for debugging failed tests. You can specify the random seed
+in the nightwatch.conf.js file, and you can find the random seed that 
+corresponds to the failed test by grabbing the time stamp of the failed test,
+which is located here: /nightwatch/screenshots/failed/YYYYMMDDTHH.mm.ss.SSS
+
+The "captureScreens" environment can be used to capture key page states 
+during the initial test-build, and can/should be used for debugging purposes.
+For example, if a test breaks the initial and periodic screen captures can be
+compared to the broken test screenshots. These screenshots are stored in the
+nightwatch/screenshots/detailed/ folder.
+
+```bash
+$ nightwatch tests -e captureScreens
+```
+
+## Saving screenshots
+
+Screenshots will also be captured if a test fails, as specified in the
+nightwatch.conf.js file. Failed tests are stored in the
+nightwatch/screenshots/failed/ folder. NOTE: This functionality
+is different than the saveScreenshots variable and pauseAndSaveScreenshot
+function that you will find in most tests.
+
+## Examples
+
+Here is an example of how to run a test:
+
+```bash
+$ nightwatch tests/loginViewData.js
 ```
 
 You can also run all of the tests in the nightwatch test folder:
@@ -44,27 +80,11 @@ You can also run all of the tests in the nightwatch test folder:
 $ nightwatch tests
 ```
 
-## Saving screenshots
-
-Screenshots are used in two ways:
-
-1. Screenshots will be captured if a test fails, as specified in the
-nightwatch.conf.js file. Failed tests are stored in the
-nightwatch/screenshots/failed/ folder. NOTE: This functionality
-is different than the saveScreenshots variable and pauseAndSaveScreenshot
-function that you will find in most tests.
-
-2. It may also be useful to periodically capture screenshots when the
-tests are running properly. These screen captures can be used to capture
-key page states during the initial test-build, and can/should be used
-for debugging purposes. For example, if a test breaks the initial and
-periodic screen captures can be compared to the broken test screenshots.
-These screenshots are stored in the
-nightwatch/screenshots/detailed/ folder. These screenshots
-can be enabled by using the following flag/syntax:
+You can also run tests in parallel. This example will start three
+instances of the test suite using the default environment:
 
 ```bash
-$ nightwatch tests --env "captureScreens"
+$ nightwatch tests -e default,default,default
 ```
 
 ## Test name convention and key
@@ -74,10 +94,6 @@ The following abbreviations are used to shorten the test names:
 | Abbreviation  | Means  |
 |---|---|
 | "_" | here the underscore stands for "and" | 
-| DSAMe (DSANotMe) | set up a data storage account for me (or someone else)  |
-| Email (EmailNo)  | do (or do not) verify email  |
-| Login  | login to existing user  |
-| Nav  | navigate from one page and to another page  |
-| Remember (RememberNo)  | do (or do not) check the remember me checkbox  |
-| Signup (18, 15, 12)  | Sign up a new user that is (>17, 13-17, or < 13) |
-| 
+| DSA | data storage account |
+| VCA  | verified clinician account |
+| TOS  | terms of service  |
