@@ -60,7 +60,17 @@ TYPE_TO_ATTR_MAP = {
         'creationDate',
         'startDate',
         'endDate',
-        'value']
+        'value'],
+    'HKQuantityTypeIdentifierFlightsClimbed': [
+        'type',
+        'sourceName',
+        'sourceVersion',
+        'device',
+        'unit',
+        'creationDate',
+        'startDate',
+        'endDate',
+        'value'],
 }
 
 
