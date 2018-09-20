@@ -73,18 +73,33 @@ TYPE_TO_ATTR_MAP = {
         'value'],
 }
 
+WORKOUT_COLUMNS = [
+    'workoutActivityType',
+    'duration',
+    'durationUnit',
+    'totalDistanceUnit',
+    'totalEnergyBurned',
+    'totalEnergyBurnedUnit',
+    'sourceName',
+    'sourceVersion',
+    'creationDate',
+    'startDate',
+    'endDate']
+
 
 class OutputFile(object):
     """
     Wrapper for the file and CSVWriter.
     """
 
-    def __init__(self, attrs):
-        metadata_type = attrs.getValue(RECORD_TYPE_ATTR)
-        self.keys = TYPE_TO_ATTR_MAP.get(metadata_type)
-        self.file = open(metadata_type + '.csv', 'w')
+    def __init__(self, file_name, columns):
+        self.columns = columns
+        self.file = open(file_name + '.csv', 'w')
         self.writer = csv.DictWriter(
-            self.file, fieldnames=self.keys, delimiter=';', lineterminator='\n')
+            self.file,
+            fieldnames=self.columns,
+            delimiter=';',
+            lineterminator='\n')
         self.writer.writeheader()
 
     def writerow(self, attrs):
@@ -94,9 +109,9 @@ class OutputFile(object):
             attrs (Attributes): Element attributes
         """
         row = {}
-        for key in self.keys:
-            value = attrs.get(key, '')
-            row[key] = value.encode('utf-8', 'ignore')
+        for column in self.columns:
+            value = attrs.get(column, '')
+            row[column] = value.encode('utf-8', 'ignore')
         self.writer.writerow(row)
 
     def close(self):
@@ -128,9 +143,18 @@ class HealthKitHandler(xml.sax.ContentHandler):
                 if metadata_type in TYPE_TO_ATTR_MAP:
                     csv_file = self.open_files.get(metadata_type)
                     if not csv_file:
-                        csv_file = OutputFile(attrs)
+                        csv_file = OutputFile(
+                            file_name=metadata_type,
+                            columns=TYPE_TO_ATTR_MAP.get(metadata_type))
                         self.open_files[metadata_type] = csv_file
                     csv_file.writerow(attrs)
+        elif xpath == 'HealthData/Workout':
+            csv_file = self.open_files.get('workoutActivityType')
+            if not csv_file:
+                csv_file = OutputFile(
+                    file_name='Workout', columns=WORKOUT_COLUMNS)
+                self.open_files['workoutActivityType'] = csv_file
+            csv_file.writerow(attrs)
 
     def endElement(self, name):
         self.elements.pop()
