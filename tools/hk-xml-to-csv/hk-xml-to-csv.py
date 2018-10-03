@@ -77,6 +77,7 @@ WORKOUT_COLUMNS = [
     'workoutActivityType',
     'duration',
     'durationUnit',
+    'totalDistance',
     'totalDistanceUnit',
     'totalEnergyBurned',
     'totalEnergyBurnedUnit',
