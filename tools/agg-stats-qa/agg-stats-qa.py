@@ -69,7 +69,7 @@ def remove_cgm_duplicates(df):
     return df.drop_duplicates(subset="time")
 
 
-def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format):
+def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format, low, high):
 
     df = cgm_df.copy()
 
@@ -77,14 +77,10 @@ def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format):
     if(bg_format == "mg_dL"):
         df.value = round(df.value * 18.01559)
         very_low = 54
-        low = 70
-        high = 180
         very_high = 250
 
     else:
         very_low = 3.0
-        low = 3.9
-        high = 10.0
         very_high = 13.9
 
     # Setup Column Names
@@ -147,7 +143,7 @@ def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format):
     return trends_df
 
 
-def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format):
+def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format, low, high):
 
     df = bgm_df.copy()
 
@@ -155,14 +151,10 @@ def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format):
     if(bg_format == "mg_dL"):
         df.value = round(df.value * 18.01559)
         very_low = 54
-        low = 70
-        high = 180
         very_high = 250
 
     else:
         very_low = 3.0
-        low = 3.9
-        high = 10.0
         very_high = 13.9
 
     # Setup day counts
@@ -219,7 +211,7 @@ def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format):
     return trends_df
 
 
-def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
+def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, low, high):
 
     # Set start date to the last Monday (0) at most 21 days away
     day_of_week = (pd.to_datetime(end_date)-timedelta(days=21)).weekday()
@@ -242,14 +234,10 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
     if(bg_format == "mg_dL"):
         df.value = round(df.value * 18.01559)
         very_low = 54
-        low = 70
-        high = 180
         very_high = 250
 
     else:
         very_low = 3.0
-        low = 3.9
-        high = 10.0
         very_high = 13.9
 
     # Setup Column Names
@@ -341,7 +329,7 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
     return trends_df
 
 
-def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
+def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, low, high):
 
     # Set start date to the last Monday (0) at most 21 days away
     day_of_week = (pd.to_datetime(end_date)-timedelta(days=21)).weekday()
@@ -364,14 +352,10 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
     if(bg_format == "mg_dL"):
         df.value = round(df.value * 18.01559)
         very_low = 54
-        low = 70
-        high = 180
         very_high = 250
 
     else:
         very_low = 3.0
-        low = 3.9
-        high = 10.0
         very_high = 13.9
 
     # Setup Column Names
@@ -495,7 +479,8 @@ wizard_df = data_df.loc[data_df.type == "wizard", ].copy()
 bg_format = "mg_dL"
 # bg_format = "mmol_l"
 
-
+low = 70
+high = 180
 # # Process Aggregated Statistics
 
 # In[51]:
@@ -517,17 +502,17 @@ start_date_4weeks = (end_date-timedelta(days=27)).strftime("%Y-%m-%d")
 end_date = (end_date+timedelta(days=1)).strftime("%Y-%m-%d")
 
 cgm_trends = pd.DataFrame()
-cgm_trends = cgm_trends.append(get_cgm_trends(cgm_df, start_date_1week, end_date, "1 week", bg_format))
-cgm_trends = cgm_trends.append(get_cgm_trends(cgm_df, start_date_2weeks, end_date, "2 weeks", bg_format))
-cgm_trends = cgm_trends.append(get_cgm_trends(cgm_df, start_date_4weeks, end_date, "4 weeks", bg_format))
+cgm_trends = cgm_trends.append(get_cgm_trends(cgm_df, start_date_1week, end_date, "1 week", bg_format, low, high))
+cgm_trends = cgm_trends.append(get_cgm_trends(cgm_df, start_date_2weeks, end_date, "2 weeks", bg_format, low, high))
+cgm_trends = cgm_trends.append(get_cgm_trends(cgm_df, start_date_4weeks, end_date, "4 weeks", bg_format, low, high))
 
 bgm_trends = pd.DataFrame()
-bgm_trends = bgm_trends.append(get_bgm_trends(bgm_df, start_date_1week, end_date, "1 week", bg_format))
-bgm_trends = bgm_trends.append(get_bgm_trends(bgm_df, start_date_2weeks, end_date, "2 weeks", bg_format))
-bgm_trends = bgm_trends.append(get_bgm_trends(bgm_df, start_date_4weeks, end_date, "4 weeks", bg_format))
+bgm_trends = bgm_trends.append(get_bgm_trends(bgm_df, start_date_1week, end_date, "1 week", bg_format, low, high))
+bgm_trends = bgm_trends.append(get_bgm_trends(bgm_df, start_date_2weeks, end_date, "2 weeks", bg_format, low, high))
+bgm_trends = bgm_trends.append(get_bgm_trends(bgm_df, start_date_4weeks, end_date, "4 weeks", bg_format, low, high))
 
-cgm_basic = get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format)
-bgm_basic = get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format)
+cgm_basic = get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, low, high)
+bgm_basic = get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, low, high)
 
 # weekly_view = get_weekly_stats(bgm_df)
 
