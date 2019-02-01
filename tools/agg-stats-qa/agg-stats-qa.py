@@ -12,8 +12,13 @@ from os.path import dirname, isfile
 from dotenv import load_dotenv
 import tzlocal
 import datetime
+import warnings
 from datetime import timedelta
 from IPython.display import display, Markdown
+
+# Set warnings as errors to receive traceback
+warnings.simplefilter('error', RuntimeWarning)
+
 # https://trello.com/c/suWzyusJ/441-standardize-aggregated-agg-stats-widgets-data-viz-general
 
 
@@ -58,10 +63,12 @@ def get_user_data(email, password, userid):
 
     return usersData
 
+
 # Optional remove duplicates
 def remove_cgm_duplicates(df):
     return df.drop_duplicates(subset="time")
-    
+
+
 def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format):
 
     df = cgm_df.copy()
@@ -102,13 +109,13 @@ def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format):
                     ]
 
     df = df[(df["localTime"] >= start_date) & (df["localTime"] <= end_date)]
+    trends_df = pd.DataFrame(index=[range_name], columns=column_names)
 
     if(len(df) < 1):
-        trends_df = pd.DataFrame(["No CGM Data"], index=[range_name])
+        trends_df.fillna("No CGM Data", inplace=True)
     else:
-        trends_df = pd.DataFrame(index=[range_name], columns=column_names)
 
-        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') +                                 " - " +                                 df["localTime"].max().strftime('%b %d, %Y')
+        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
@@ -139,6 +146,7 @@ def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format):
 
     return trends_df
 
+
 def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format):
 
     df = bgm_df.copy()
@@ -158,7 +166,7 @@ def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format):
         very_high = 13.9
 
     # Setup day counts
-    day_counts = pd.DataFrame({"1 week":[7], "2 weeks":[14],"4 weeks":[28]})
+    day_counts = pd.DataFrame({"1 week": [7], "2 weeks": [14], "4 weeks": [28]})
     days = int(day_counts[range_name])
 
     # Setup Column Names
@@ -181,11 +189,11 @@ def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format):
                     ]
 
     df = df[(df["localTime"] >= start_date) & (df["localTime"] <= end_date)]
+    trends_df = pd.DataFrame(index=[range_name], columns=column_names)
 
     if(len(df) < 1):
-        trends_df = pd.DataFrame(["No BGM Data"], index=[range_name])
+        trends_df.fillna("No BGM Data", inplace=True)
     else:
-        trends_df = pd.DataFrame(index=[range_name], columns=column_names)
 
         trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
@@ -209,9 +217,10 @@ def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format):
         trends_df["CV (BGM)"] = 100*trends_df["Std. Deviation (BGM)"]/trends_df["Avg Glucose (BGM)"]
 
     return trends_df
-    
+
+
 def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
-    
+
     # Set start date to the last Monday (0) at most 21 days away
     day_of_week = (pd.to_datetime(end_date)-timedelta(days=21)).weekday()
 
@@ -221,9 +230,9 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
         subtract_days = 0
 
     start_date = (pd.to_datetime(end_date)-timedelta(days=21-subtract_days)).strftime("%Y-%m-%d")
-    
+
     days = (pd.to_datetime(end_date)-pd.to_datetime(start_date)).days
-    
+
     df = cgm_df.copy()
     temp_bolus_df = bolus_df.copy()
     temp_basal_df = basal_df.copy()
@@ -272,13 +281,13 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
     temp_bolus_df = temp_bolus_df[(temp_bolus_df["localTime"] >= start_date) & (temp_bolus_df["localTime"] <= end_date)]
     temp_basal_df = temp_basal_df[(temp_basal_df["localTime"] >= start_date) & (temp_basal_df["localTime"] <= end_date)]
     temp_wizard_df = temp_wizard_df[(temp_wizard_df["localTime"] >= start_date) & (temp_wizard_df["localTime"] <= end_date)]
-    
-    if(len(df) < 1):
-        trends_df = pd.DataFrame(["No CGM Data"], index=["Basic CGM"])
-    else:
-        trends_df = pd.DataFrame(index=["Basic CGM"], columns=column_names)
+    trends_df = pd.DataFrame(index=["Basic CGM"], columns=column_names)
 
-        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') +                                 " - " +                                 df["localTime"].max().strftime('%b %d, %Y')
+    if(len(df) < 1):
+        trends_df.fillna("No CGM Data", inplace=True)
+    else:
+
+        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
@@ -299,12 +308,12 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
 
         total_possible_points = len(pd.date_range(start_date, end_date, freq="5min"))
         trends_df["Sensor Usage"] = 100*cgm_points/total_possible_points
-        
+
         if(len(temp_basal_df) > 0):
             trends_df["Avg Daily Basal"] = (temp_basal_df.rate * temp_basal_df.duration/1000/60/60).sum()/days
         else:
             trends_df["Avg Daily Basal"] = 0
-            
+  
         if(len(temp_bolus_df) > 0):
             trends_df["Avg Daily Bolus"] = temp_bolus_df["normal"].sum()/days
         else:
@@ -314,9 +323,9 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
             trends_df["Avg Daily Carbs"] = temp_wizard_df["carbInput"].sum()/days
         else:
             trends_df["Avg Daily Carbs"] = 0
-            
+
         trends_df["Avg Daily Total Insulin"] = trends_df["Avg Daily Bolus"] + trends_df["Avg Daily Basal"]
-        
+
         if((trends_df["Avg Daily Total Insulin"] > 0)[0]):
             trends_df["% Avg Bolus"] = 100 * trends_df["Avg Daily Bolus"] / trends_df["Avg Daily Total Insulin"]
             trends_df["% Avg Basal"] = 100 * trends_df["Avg Daily Basal"] / trends_df["Avg Daily Total Insulin"]
@@ -331,8 +340,9 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
 
     return trends_df
 
+
 def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
-    
+
     # Set start date to the last Monday (0) at most 21 days away
     day_of_week = (pd.to_datetime(end_date)-timedelta(days=21)).weekday()
 
@@ -342,9 +352,9 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
         subtract_days = 0
 
     start_date = (pd.to_datetime(end_date)-timedelta(days=21-subtract_days)).strftime("%Y-%m-%d")
-    
+
     days = (pd.to_datetime(end_date)-pd.to_datetime(start_date)).days
-    
+
     df = bgm_df.copy()
     temp_bolus_df = bolus_df.copy()
     temp_basal_df = basal_df.copy()
@@ -391,13 +401,13 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
     temp_bolus_df = temp_bolus_df[(temp_bolus_df["localTime"] >= start_date) & (temp_bolus_df["localTime"] <= end_date)]
     temp_basal_df = temp_basal_df[(temp_basal_df["localTime"] >= start_date) & (temp_basal_df["localTime"] <= end_date)]
     temp_wizard_df = temp_wizard_df[(temp_wizard_df["localTime"] >= start_date) & (temp_wizard_df["localTime"] <= end_date)]
-    
-    if(len(df) < 1):
-        trends_df = pd.DataFrame(["No BGM Data"], index=["Basic BGM"])
-    else:
-        trends_df = pd.DataFrame(index=["Basic BGM"], columns=column_names)
+    trends_df = pd.DataFrame(index=["Basic BGM"], columns=column_names)
 
-        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') +                                 " - " +                                 df["localTime"].max().strftime('%b %d, %Y')
+    if(len(df) < 1):
+        trends_df.fillna("No BGM Data", inplace=True)
+    else:
+
+        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
@@ -415,12 +425,12 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
         trends_df["Avg Count < "+str(very_low)] = sum(df.value < very_low)/days
 
         trends_df["Avg Glucose (BGM)"] = df.value.mean()
-        
+
         if(len(temp_basal_df) > 0):
             trends_df["Avg Daily Basal"] = (temp_basal_df.rate * temp_basal_df.duration/1000/60/60).sum()/days
         else:
             trends_df["Avg Daily Basal"] = 0
-            
+
         if(len(temp_bolus_df) > 0):
             trends_df["Avg Daily Bolus"] = temp_bolus_df["normal"].sum()/days
         else:
@@ -430,9 +440,9 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format):
             trends_df["Avg Daily Carbs"] = temp_wizard_df["carbInput"].sum()/days
         else:
             trends_df["Avg Daily Carbs"] = 0
-            
+
         trends_df["Avg Daily Total Insulin"] = trends_df["Avg Daily Bolus"] + trends_df["Avg Daily Basal"]
-        
+
         if((trends_df["Avg Daily Total Insulin"] > 0)[0]):
             trends_df["% Avg Bolus"] = 100 * trends_df["Avg Daily Bolus"] / trends_df["Avg Daily Total Insulin"]
             trends_df["% Avg Basal"] = 100 * trends_df["Avg Daily Basal"] / trends_df["Avg Daily Total Insulin"]
@@ -462,7 +472,7 @@ data_df.time = pd.to_datetime(data_df.time).dt.tz_localize('UTC')
 # If there is a manual upload, get the timezone of the most recent upload
 # Otherwise default to local computer time
 if("timezone" in list(data_df)):
-    local_timezone = data_df.loc[data_df["type"]=="upload"].sort_values(by="time", ascending=False).reset_index()["timezone"][0]
+    local_timezone = data_df.loc[data_df["type"] == "upload"].sort_values(by="time", ascending=False).reset_index()["timezone"][0]
 else:
     local_timezone = str(tzlocal.get_localzone())
 
@@ -470,11 +480,11 @@ else:
 data_df["localTime"] = data_df.time.dt.tz_convert(local_timezone)
 
 # Filter the data into cgm, bolus, and basal dataframes
-cgm_df = data_df.loc[data_df.type=="cbg",].copy()
-bgm_df = data_df.loc[data_df.type=="smbg",].copy()
-bolus_df = data_df.loc[data_df.type=="bolus",].copy()
-basal_df = data_df.loc[data_df.type=="basal",].copy()
-wizard_df = data_df.loc[data_df.type=="wizard",].copy()
+cgm_df = data_df.loc[data_df.type == "cbg", ].copy()
+bgm_df = data_df.loc[data_df.type == "smbg", ].copy()
+bolus_df = data_df.loc[data_df.type == "bolus", ].copy()
+basal_df = data_df.loc[data_df.type == "basal", ].copy()
+wizard_df = data_df.loc[data_df.type == "wizard", ].copy()
 
 
 # # Output Settings
@@ -482,7 +492,7 @@ wizard_df = data_df.loc[data_df.type=="wizard",].copy()
 # In[50]:
 
 
-bg_format = "mg_dL" 
+bg_format = "mg_dL"
 # bg_format = "mmol_l"
 
 
@@ -493,11 +503,11 @@ bg_format = "mg_dL"
 
 # Trends View Statistics
 # Set default Trends start and end dates
-if(len(cgm_df>0)):
+if(len(cgm_df > 0)):
     end_date = cgm_df["localTime"].max()
 else:
     end_date = bgm_df["localTime"].max()
-    
+
 # Uncomment for custom end dates
 # end_date = pd.to_datetime("2018-12-11").tz_localize(local_timezone)
 
@@ -519,7 +529,7 @@ bgm_trends = bgm_trends.append(get_bgm_trends(bgm_df, start_date_4weeks, end_dat
 cgm_basic = get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format)
 bgm_basic = get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format)
 
-#weekly_view = get_weekly_stats(bgm_df)
+# weekly_view = get_weekly_stats(bgm_df)
 
 
 # # OUTPUT
