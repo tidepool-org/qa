@@ -1,2 +1,6 @@
 
 tools/agg-stats-qa/\.env
+
+tools/\.DS_Store
+
+\.DS_Store
