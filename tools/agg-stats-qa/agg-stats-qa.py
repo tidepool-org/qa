@@ -122,11 +122,11 @@ def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format, low, hig
         trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/cgm_points
         trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/cgm_points
 
-        trends_df["Time > "+str(very_high)] = "%dh %dm" % divmod(round(1440*trends_df["% > "+str(very_high)]/100), 60)
-        trends_df["Time "+str(high)+"-"+str(very_high)] = "%dh %dm" % divmod(round(1440*trends_df["% "+str(high)+"-"+str(very_high)])/100, 60)
-        trends_df["Time "+str(low)+"-"+str(high)] = "%dh %dm" % divmod(round(1440*trends_df["% "+str(low)+"-"+str(high)]/100), 60)
-        trends_df["Time "+str(very_low)+"-"+str(low)] = "%dh %dm" % divmod(round(1440*trends_df["% "+str(very_low)+"-"+str(low)]/100), 60)
-        trends_df["Time < "+str(very_low)] = "%dh %dm" % divmod(round(1440*trends_df["% < "+str(very_low)]/100), 60)
+        trends_df["Time > "+str(very_high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% > "+str(very_high)]/100), 60)
+        trends_df["Time "+str(high)+"-"+str(very_high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(high)+"-"+str(very_high)])/100, 60)
+        trends_df["Time "+str(low)+"-"+str(high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(low)+"-"+str(high)]/100), 60)
+        trends_df["Time "+str(very_low)+"-"+str(low)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(very_low)+"-"+str(low)]/100), 60)
+        trends_df["Time < "+str(very_low)] = "%dh %.1fm" % divmod(round(1440*trends_df["% < "+str(very_low)]/100), 60)
 
         trends_df["Avg Glucose (CGM)"] = df.value.mean()
 
@@ -260,6 +260,10 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
                     "% Avg Bolus",
                     "Avg Daily Basal",
                     "Avg Daily Bolus",
+                    "% Avg Time in Manual",
+                    "% Avg Time in Auto Mode",
+                    "Avg Time in Manual",
+                    "Avg Time in Auto Mode",
                     "Avg Daily Carbs",
                     "Avg Daily Total Insulin",
                     "GMI (CGM)",
@@ -286,11 +290,11 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
         trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/cgm_points
         trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/cgm_points
 
-        trends_df["Time > "+str(very_high)] = "%dh %dm" % divmod(round(1440*trends_df["% > "+str(very_high)]/100), 60)
-        trends_df["Time "+str(high)+"-"+str(very_high)] = "%dh %dm" % divmod(round(1440*trends_df["% "+str(high)+"-"+str(very_high)])/100, 60)
-        trends_df["Time "+str(low)+"-"+str(high)] = "%dh %dm" % divmod(round(1440*trends_df["% "+str(low)+"-"+str(high)]/100), 60)
-        trends_df["Time "+str(very_low)+"-"+str(low)] = "%dh %dm" % divmod(round(1440*trends_df["% "+str(very_low)+"-"+str(low)]/100), 60)
-        trends_df["Time < "+str(very_low)] = "%dh %dm" % divmod(round(1440*trends_df["% < "+str(very_low)]/100), 60)
+        trends_df["Time > "+str(very_high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% > "+str(very_high)]/100), 60)
+        trends_df["Time "+str(high)+"-"+str(very_high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(high)+"-"+str(very_high)])/100, 60)
+        trends_df["Time "+str(low)+"-"+str(high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(low)+"-"+str(high)]/100), 60)
+        trends_df["Time "+str(very_low)+"-"+str(low)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(very_low)+"-"+str(low)]/100), 60)
+        trends_df["Time < "+str(very_low)] = "%dh %.1fm" % divmod(round(1440*trends_df["% < "+str(very_low)]/100), 60)
 
         trends_df["Avg Glucose (CGM)"] = df.value.mean()
 
@@ -301,7 +305,21 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
             trends_df["Avg Daily Basal"] = (temp_basal_df.rate * temp_basal_df.duration/1000/60/60).sum()/days
         else:
             trends_df["Avg Daily Basal"] = 0
-  
+
+        # 670g Auto-Mode Calculation
+        if("scheduleName" in list(temp_basal_df)):
+            if("Auto-Basal" in temp_basal_df["scheduleName"].unique()):
+                trends_df["% Avg Time in Auto Mode"] = 100*temp_basal_df.duration.loc[temp_basal_df["scheduleName"] == "Auto-Basal"].sum()/1000/60/60/days/24
+                trends_df["% Avg Time in Manual"] = 100 - trends_df["% Avg Time in Auto Mode"]
+                trends_df["Avg Time in Auto Mode"] = "%dh %.1fm" % divmod(round(1440*trends_df["% Avg Time in Auto Mode"]/100), 60)
+                trends_df["Avg Time in Manual"] = "%dh %.1fm" % divmod(round(1440*trends_df["% Avg Time in Manual"]/100), 60)
+        else:
+            columns_to_drop = ["% Avg Time in Auto Mode",
+                               "% Avg Time in Manual",
+                               "Avg Time in Auto Mode",
+                               "Avg Time in Manual"]
+            trends_df.drop(columns=columns_to_drop, inplace=True)
+
         if(len(temp_bolus_df) > 0):
             trends_df["Avg Daily Bolus"] = temp_bolus_df["normal"].sum()/days
         else:
@@ -377,6 +395,10 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
                     "% Avg Bolus",
                     "Avg Daily Basal",
                     "Avg Daily Bolus",
+                    "% Avg Time in Manual",
+                    "% Avg Time in Auto Mode",
+                    "Avg Time in Manual",
+                    "Avg Time in Auto Mode",
                     "Avg Daily Carbs",
                     "Avg Daily Total Insulin",
                     ]
@@ -419,6 +441,20 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
             trends_df["Avg Daily Bolus"] = temp_bolus_df["normal"].sum()/days
         else:
             trends_df["Avg Daily Bolus"] = 0
+
+        # 670g Auto-Mode Calculation
+        if("scheduleName" in list(temp_basal_df)):
+            if("Auto-Basal" in temp_basal_df["scheduleName"].unique()):
+                trends_df["% Avg Time in Auto Mode"] = 100*temp_basal_df.duration.loc[temp_basal_df["scheduleName"] == "Auto-Basal"].sum()/1000/60/60/days/24
+                trends_df["% Avg Time in Manual"] = 100 - trends_df["% Avg Time in Auto Mode"]
+                trends_df["Avg Time in Auto Mode"] = "%dh %.1fm" % divmod(round(1440*trends_df["% Avg Time in Auto Mode"]/100), 60)
+                trends_df["Avg Time in Manual"] = "%dh %.1fm" % divmod(round(1440*trends_df["% Avg Time in Manual"]/100), 60)
+        else:
+            columns_to_drop = ["% Avg Time in Auto Mode",
+                               "% Avg Time in Manual",
+                               "Avg Time in Auto Mode",
+                               "Avg Time in Manual"]
+            trends_df.drop(columns=columns_to_drop, inplace=True)
 
         if(len(temp_wizard_df) > 0):
             trends_df["Avg Daily Carbs"] = temp_wizard_df["carbInput"].sum()/days
