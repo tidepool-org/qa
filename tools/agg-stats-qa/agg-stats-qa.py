@@ -499,7 +499,77 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
 
     return trends_df
 
-# def get_weekly_stats(bgm_df, custom_start_date, custom_end_date)
+def get_weekly_stats(bgm_df, weekly_date_range, bg_format, low, high):
+    
+    "Oct 26, 2018 - Nov 8, 2018"
+    start_date = pd.to_datetime(weekly_date_range.split(" - ")[0])
+    end_date = pd.to_datetime(weekly_date_range.split(" - ")[1])+timedelta(days=1)
+    days = (end_date-start_date).days
+    
+    start_date = start_date.strftime("%Y-%m-%d")
+    end_date = end_date.strftime("%Y-%m-%d")
+    
+    df = bgm_df.copy()
+
+    # Set up BG conversions
+    if(bg_format == "mg_dL"):
+        df.value = round(df.value * 18.01559)
+        very_low = 54
+        very_high = 250
+
+    else:
+        very_low = 3.0
+        very_high = 13.9
+
+    # Setup Column Names
+    column_names = ["Date Range",
+                    "First Timestamp",
+                    "Last Timestamp",
+                    "Avg Count > "+str(very_high),
+                    "Avg Count "+str(high)+"-"+str(very_high),
+                    "Avg Count "+str(low)+"-"+str(high),
+                    "Avg Count "+str(very_low)+"-"+str(low),
+                    "Avg Count < "+str(very_low),
+                    "% > "+str(very_high),
+                    "% "+str(high)+"-"+str(very_high),
+                    "% "+str(low)+"-"+str(high),
+                    "% "+str(very_low)+"-"+str(low),
+                    "% < "+str(very_low),
+                    "Avg Glucose (BGM)",
+                    "Std. Deviation (BGM)",
+                    "CV (BGM)"
+                    ]
+
+    df = df[(df["localTime"] >= start_date) & (df["localTime"] <= end_date)]
+    trends_df = pd.DataFrame(index=["Weekly View"], columns=column_names)
+
+    if(len(df) < 1):
+        trends_df.fillna("No BGM Data", inplace=True)
+    else:
+
+        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
+        trends_df["First Timestamp"] = df["localTime"].min()
+        trends_df["Last Timestamp"] = df["localTime"].max()
+
+        cgm_points = df.value.count()
+        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/cgm_points
+        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/cgm_points
+        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/cgm_points
+        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/cgm_points
+        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/cgm_points
+
+        trends_df["Avg Count > "+str(very_high)] = sum(df.value > very_high)/days
+        trends_df["Avg Count "+str(high)+"-"+str(very_high)] = sum((df.value > high) & (df.value <= very_high))/days
+        trends_df["Avg Count "+str(low)+"-"+str(high)] = sum((df.value >= low) & (df.value <= high))/days
+        trends_df["Avg Count "+str(very_low)+"-"+str(low)] = sum((df.value >= very_low) & (df.value < low))/days
+        trends_df["Avg Count < "+str(very_low)] = sum(df.value < very_low)/days
+
+        trends_df["Avg Glucose (BGM)"] = df.value.mean()
+
+        trends_df["Std. Deviation (BGM)"] = df.value.std()
+        trends_df["CV (BGM)"] = 100*trends_df["Std. Deviation (BGM)"]/trends_df["Avg Glucose (BGM)"]
+
+    return trends_df
 
 
 # # Pre-Processing
@@ -577,8 +647,10 @@ bgm_trends = bgm_trends.append(get_bgm_trends(bgm_df, start_date_4weeks, end_dat
 cgm_basic = get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, low, high)
 bgm_basic = get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, low, high)
 
-# weekly_view = get_weekly_stats(bgm_df)
-
+# Custom Weekly View
+# Date Range from front-end display:
+weekly_date_range = "Oct 26, 2018 - Nov 8, 2018"
+weekly_view = get_weekly_stats(bgm_df, weekly_date_range, bg_format, low, high)
 
 # # OUTPUT
 
