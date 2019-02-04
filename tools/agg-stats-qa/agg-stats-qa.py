@@ -348,7 +348,7 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
             trends_df.drop(columns=columns_to_drop, inplace=True)
 
         if(len(temp_bolus_df) > 0):
-            trends_df["Avg Daily Bolus"] = temp_bolus_df["normal"].sum()/days
+            trends_df["Avg Daily Bolus"] = temp_bolus_df["total"].sum()/days
         else:
             trends_df["Avg Daily Bolus"] = 0
 
@@ -465,7 +465,7 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
             trends_df["Avg Daily Basal"] = 0
 
         if(len(temp_bolus_df) > 0):
-            trends_df["Avg Daily Bolus"] = temp_bolus_df["normal"].sum()/days
+            trends_df["Avg Daily Bolus"] = temp_bolus_df["total"].sum()/days
         else:
             trends_df["Avg Daily Bolus"] = 0
 
@@ -508,7 +508,7 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
 
 
 # Retrieve all data
-data_df = get_user_data(os.environ["email"], os.environ["pass"], os.environ["id"])
+data_df, low, high, bg_format = get_user_data(os.environ["email"], os.environ["pass"], os.environ["id"])
 
 if("time" not in list(data_df)):
     print("No Data Downloaded!")
@@ -532,6 +532,12 @@ bgm_df = data_df.loc[data_df.type == "smbg", ].copy()
 bolus_df = data_df.loc[data_df.type == "bolus", ].copy()
 basal_df = data_df.loc[data_df.type == "basal", ].copy()
 wizard_df = data_df.loc[data_df.type == "wizard", ].copy()
+
+# Add extended and normal boluses together
+if("extended" in list(bolus_df)):
+    bolus_df["total"] = bolus_df["normal"] + bolus_df["extended"]
+else:
+    bolus_df["total"] = bolus_df["normal"]
 
 
 # # Output Settings
