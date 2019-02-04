@@ -58,10 +58,37 @@ def get_user_data(email, password, userid):
 
         else:
             print("ERROR", myResponse2.status_code)
-    else:
-        print("ERROR", myResponse.status_code)
 
-    return usersData
+        url2 = "https://stg-api.tidepool.org/metadata/" + userid + "/settings"
+        headers = {
+            "x-tidepool-session-token": xtoken,
+            "Content-Type": "application/json"
+            }
+
+        myResponse2 = requests.get(url2, headers=headers)
+        if(myResponse2.ok):
+
+            profileData = json.loads(myResponse2.content.decode())
+            profileData = pd.DataFrame(profileData)
+
+            low_value = profileData["bgTarget"]["low"]
+            high_value = profileData["bgTarget"]["high"]
+
+            if(high_value > 70):
+                bg_format = "mg_dL"
+            else:
+                bg_format = "mmol_l"
+
+        else:
+            print("Cannot retrieve profile settings - ERROR", myResponse2.status_code)
+            print("Defaulting to units mg/dL and target range 70-180")
+            low_value = 70
+            high_value = 180
+            bg_format = "mg_dL"
+    else:
+        print("Cannot retrieve profile data - ERROR", myResponse.status_code)
+
+    return usersData, low_value, high_value, bg_format
 
 
 # Optional remove duplicates
@@ -511,12 +538,6 @@ wizard_df = data_df.loc[data_df.type == "wizard", ].copy()
 
 # In[50]:
 
-
-bg_format = "mg_dL"
-# bg_format = "mmol_l"
-
-low = 70
-high = 180
 # # Process Aggregated Statistics
 
 # In[51]:
