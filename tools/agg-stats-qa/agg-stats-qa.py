@@ -218,12 +218,12 @@ def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format, low, hig
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
-        cgm_points = df.value.count()
-        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/cgm_points
-        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/cgm_points
-        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/cgm_points
-        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/cgm_points
-        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/cgm_points
+        bgm_points = df.value.count()
+        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/bgm_points
+        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/bgm_points
+        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/bgm_points
+        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/bgm_points
+        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/bgm_points
 
         trends_df["Avg Count > "+str(very_high)] = sum(df.value > very_high)/days
         trends_df["Avg Count "+str(high)+"-"+str(very_high)] = sum((df.value > high) & (df.value <= very_high))/days
@@ -444,12 +444,12 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
-        cgm_points = df.value.count()
-        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/cgm_points
-        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/cgm_points
-        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/cgm_points
-        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/cgm_points
-        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/cgm_points
+        bgm_points = df.value.count()
+        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/bgm_points
+        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/bgm_points
+        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/bgm_points
+        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/bgm_points
+        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/bgm_points
 
         trends_df["Avg Count > "+str(very_high)] = sum(df.value > very_high)/days
         trends_df["Avg Count "+str(high)+"-"+str(very_high)] = sum((df.value > high) & (df.value <= very_high))/days
@@ -551,12 +551,12 @@ def get_weekly_stats(bgm_df, weekly_date_range, bg_format, low, high):
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
-        cgm_points = df.value.count()
-        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/cgm_points
-        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/cgm_points
-        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/cgm_points
-        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/cgm_points
-        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/cgm_points
+        bgm_points = df.value.count()
+        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/bgm_points
+        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/bgm_points
+        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/bgm_points
+        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/bgm_points
+        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/bgm_points
 
         trends_df["Avg Count > "+str(very_high)] = sum(df.value > very_high)/days
         trends_df["Avg Count "+str(high)+"-"+str(very_high)] = sum((df.value > high) & (df.value <= very_high))/days
@@ -571,7 +571,237 @@ def get_weekly_stats(bgm_df, weekly_date_range, bg_format, low, high):
 
     return trends_df
 
+###### DAILY ########
+    
+def get_daily_cgm_stats(cgm_df, bolus_df, basal_df, wizard_df, daily_date_range, bg_format, low, high, local_timezone):
 
+    start_date, end_date = pd.to_datetime(daily_date_range).tz_localize('UTC').tz_convert(local_timezone)
+
+    df = cgm_df.copy()
+    temp_bolus_df = bolus_df.copy()
+    temp_basal_df = basal_df.copy()
+    temp_wizard_df = wizard_df.copy()
+
+    # Set up BG conversions
+    if(bg_format == "mg_dL"):
+        df.value = round(df.value * 18.01559)
+        very_low = 54
+        very_high = 250
+
+    else:
+        very_low = 3.0
+        very_high = 13.9
+
+    # Setup Column Names
+    column_names = ["First Timestamp",
+                    "Last Timestamp",
+                    "% > "+str(very_high),
+                    "% "+str(high)+"-"+str(very_high),
+                    "% "+str(low)+"-"+str(high),
+                    "% "+str(very_low)+"-"+str(low),
+                    "% < "+str(very_low),
+                    "Time > "+str(very_high),
+                    "Time "+str(high)+"-"+str(very_high),
+                    "Time "+str(low)+"-"+str(high),
+                    "Time "+str(very_low)+"-"+str(low),
+                    "Time < "+str(very_low),
+                    "Avg Glucose (CGM)",
+                    "% Basal",
+                    "% Bolus",
+                    "Total Basal",
+                    "Total Bolus",
+                    "% Time in Manual",
+                    "% Time in Auto Mode",
+                    "Time in Manual",
+                    "Time in Auto Mode",
+                    "Total Carbs",
+                    "Std. Deviation (CGM)",
+                    "CV (CGM)"
+                    ]
+
+    df = df[(df["localTime"] >= start_date) & (df["localTime"] <= end_date)]
+    temp_bolus_df = temp_bolus_df[(temp_bolus_df["localTime"] >= start_date) & (temp_bolus_df["localTime"] <= end_date)]
+    temp_basal_df = temp_basal_df[(temp_basal_df["localTime"] >= start_date) & (temp_basal_df["localTime"] <= end_date)]
+    temp_wizard_df = temp_wizard_df[(temp_wizard_df["localTime"] >= start_date) & (temp_wizard_df["localTime"] <= end_date)]
+    trends_df = pd.DataFrame(index=["Daily CGM"], columns=column_names)
+
+    if(len(df) < 1):
+        trends_df.fillna("No CGM Data", inplace=True)
+    else:
+
+        trends_df["First Timestamp"] = start_date
+        trends_df["Last Timestamp"] = end_date
+
+        cgm_points = df.value.count()
+        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/cgm_points
+        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/cgm_points
+        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/cgm_points
+        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/cgm_points
+        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/cgm_points
+
+        trends_df["Time > "+str(very_high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% > "+str(very_high)]/100), 60)
+        trends_df["Time "+str(high)+"-"+str(very_high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(high)+"-"+str(very_high)])/100, 60)
+        trends_df["Time "+str(low)+"-"+str(high)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(low)+"-"+str(high)]/100), 60)
+        trends_df["Time "+str(very_low)+"-"+str(low)] = "%dh %.1fm" % divmod(round(1440*trends_df["% "+str(very_low)+"-"+str(low)]/100), 60)
+        trends_df["Time < "+str(very_low)] = "%dh %.1fm" % divmod(round(1440*trends_df["% < "+str(very_low)]/100), 60)
+
+        trends_df["Avg Glucose (CGM)"] = df.value.mean()
+
+        if(len(temp_basal_df) > 0):
+            trends_df["Total Basal"] = (temp_basal_df.rate * temp_basal_df.duration/1000/60/60).sum()
+        else:
+            trends_df["Total Basal"] = 0
+
+        # 670g Auto-Mode Calculation
+        if("scheduleName" in list(temp_basal_df)):
+            if("Auto-Basal" in temp_basal_df["scheduleName"].unique()):
+                trends_df["% Time in Auto Mode"] = 100*temp_basal_df.duration.loc[temp_basal_df["scheduleName"] == "Auto-Basal"].sum()/1000/60/60/24
+                trends_df["% Time in Manual"] = 100 - trends_df["% Time in Auto Mode"]
+                trends_df["Time in Auto Mode"] = "%dh %.1fm" % divmod(round(1440*trends_df["% Time in Auto Mode"]/100), 60)
+                trends_df["Time in Manual"] = "%dh %.1fm" % divmod(round(1440*trends_df["% Time in Manual"]/100), 60)
+        else:
+            columns_to_drop = ["% Time in Auto Mode",
+                               "% Time in Manual",
+                               "Time in Auto Mode",
+                               "Time in Manual"]
+            trends_df.drop(columns=columns_to_drop, inplace=True)
+
+        if(len(temp_bolus_df) > 0):
+            trends_df["Total Bolus"] = temp_bolus_df["total"].sum()
+        else:
+            trends_df["Total Bolus"] = 0
+
+        if(len(temp_wizard_df) > 0):
+            trends_df["Total Carbs"] = temp_wizard_df["carbInput"].sum()
+        else:
+            trends_df["Total Carbs"] = 0
+
+        total_insulin = trends_df["Total Bolus"] + trends_df["Total Basal"]
+
+        if((total_insulin > 0)[0]):
+            trends_df["% Bolus"] = 100 * trends_df["Total Bolus"] / total_insulin
+            trends_df["% Basal"] = 100 * trends_df["Total Basal"] / total_insulin
+        else:
+            trends_df["% Bolus"] = 0
+            trends_df["% Basal"] = 0
+   
+        trends_df["Std. Deviation (CGM)"] = df.value.std()
+        trends_df["CV (CGM)"] = 100*trends_df["Std. Deviation (CGM)"]/trends_df["Avg Glucose (CGM)"]
+
+    return trends_df
+
+
+def get_daily_bgm_stats(bgm_df, bolus_df, basal_df, wizard_df, daily_date_range, bg_format, low, high, local_timezone):
+
+    start_date, end_date = pd.to_datetime(daily_date_range).tz_localize('UTC').tz_convert(local_timezone)
+
+    df = bgm_df.copy()
+    temp_bolus_df = bolus_df.copy()
+    temp_basal_df = basal_df.copy()
+    temp_wizard_df = wizard_df.copy()
+
+    # Set up BG conversions
+    if(bg_format == "mg_dL"):
+        df.value = round(df.value * 18.01559)
+        very_low = 54
+        very_high = 250
+
+    else:
+        very_low = 3.0
+        very_high = 13.9
+
+    # Setup Column Names
+    column_names = ["First Timestamp",
+                    "Last Timestamp",
+                    "Readings > "+str(very_high),
+                    "Readings "+str(high)+"-"+str(very_high),
+                    "Readings "+str(low)+"-"+str(high),
+                    "Readings "+str(very_low)+"-"+str(low),
+                    "Readings < "+str(very_low),
+                    "% > "+str(very_high),
+                    "% "+str(high)+"-"+str(very_high),
+                    "% "+str(low)+"-"+str(high),
+                    "% "+str(very_low)+"-"+str(low),
+                    "% < "+str(very_low),
+                    "Avg Glucose (BGM)",
+                    "% Basal",
+                    "% Bolus",
+                    "Total Basal",
+                    "Total Bolus",
+                    "% Time in Manual",
+                    "% Time in Auto Mode",
+                    "Time in Manual",
+                    "Time in Auto Mode",
+                    "Total Carbs",
+                    ]
+
+    df = df[(df["localTime"] >= start_date) & (df["localTime"] <= end_date)]
+    temp_bolus_df = temp_bolus_df[(temp_bolus_df["localTime"] >= start_date) & (temp_bolus_df["localTime"] <= end_date)]
+    temp_basal_df = temp_basal_df[(temp_basal_df["localTime"] >= start_date) & (temp_basal_df["localTime"] <= end_date)]
+    temp_wizard_df = temp_wizard_df[(temp_wizard_df["localTime"] >= start_date) & (temp_wizard_df["localTime"] <= end_date)]
+    trends_df = pd.DataFrame(index=["Daily BGM"], columns=column_names)
+
+    if(len(df) < 1):
+        trends_df.fillna("No BGM Data", inplace=True)
+    else:
+
+        trends_df["First Timestamp"] = start_date
+        trends_df["Last Timestamp"] = end_date
+
+        bgm_points = df.value.count()
+        trends_df["% > "+str(very_high)] = 100*sum(df.value > very_high)/bgm_points
+        trends_df["% "+str(high)+"-"+str(very_high)] = 100*sum((df.value > high) & (df.value <= very_high))/bgm_points
+        trends_df["% "+str(low)+"-"+str(high)] = 100*sum((df.value >= low) & (df.value <= high))/bgm_points
+        trends_df["% "+str(very_low)+"-"+str(low)] = 100*sum((df.value >= very_low) & (df.value < low))/bgm_points
+        trends_df["% < "+str(very_low)] = 100*sum(df.value < very_low)/bgm_points
+
+        trends_df["Readings > "+str(very_high)] = sum(df.value > very_high)
+        trends_df["Readings "+str(high)+"-"+str(very_high)] = sum((df.value > high) & (df.value <= very_high))
+        trends_df["Readings "+str(low)+"-"+str(high)] = sum((df.value >= low) & (df.value <= high))
+        trends_df["Readings "+str(very_low)+"-"+str(low)] = sum((df.value >= very_low) & (df.value < low))
+        trends_df["Readings < "+str(very_low)] = sum(df.value < very_low)
+
+        trends_df["Avg Glucose (BGM)"] = df.value.mean()
+
+        if(len(temp_basal_df) > 0):
+            trends_df["Total Basal"] = (temp_basal_df.rate * temp_basal_df.duration/1000/60/60).sum()
+        else:
+            trends_df["Total Basal"] = 0
+
+        # 670g Auto-Mode Calculation
+        if("scheduleName" in list(temp_basal_df)):
+            if("Auto-Basal" in temp_basal_df["scheduleName"].unique()):
+                trends_df["% Time in Auto Mode"] = 100*temp_basal_df.duration.loc[temp_basal_df["scheduleName"] == "Auto-Basal"].sum()/1000/60/60/24
+                trends_df["% Time in Manual"] = 100 - trends_df["% Time in Auto Mode"]
+                trends_df["Time in Auto Mode"] = "%dh %.1fm" % divmod(round(1440*trends_df["% Time in Auto Mode"]/100), 60)
+                trends_df["Time in Manual"] = "%dh %.1fm" % divmod(round(1440*trends_df["% Time in Manual"]/100), 60)
+        else:
+            columns_to_drop = ["% Time in Auto Mode",
+                               "% Time in Manual",
+                               "Time in Auto Mode",
+                               "Time in Manual"]
+            trends_df.drop(columns=columns_to_drop, inplace=True)
+
+        if(len(temp_bolus_df) > 0):
+            trends_df["Total Bolus"] = temp_bolus_df["total"].sum()
+        else:
+            trends_df["Total Bolus"] = 0
+
+        if(len(temp_wizard_df) > 0):
+            trends_df["Total Carbs"] = temp_wizard_df["carbInput"].sum()
+        else:
+            trends_df["Total Carbs"] = 0
+
+        total_insulin = trends_df["Total Bolus"] + trends_df["Total Basal"]
+
+        if((total_insulin > 0)[0]):
+            trends_df["% Bolus"] = 100 * trends_df["Total Bolus"] / total_insulin
+            trends_df["% Basal"] = 100 * trends_df["Total Basal"] / total_insulin
+        else:
+            trends_df["% Bolus"] = 0
+            trends_df["% Basal"] = 0
+
+    return trends_df
 # # Pre-Processing
 
 # In[49]:
@@ -605,6 +835,7 @@ wizard_df = data_df.loc[data_df.type == "wizard", ].copy()
 
 # Add extended and normal boluses together
 if("extended" in list(bolus_df)):
+    bolus_df["extended"].fillna(0, inplace=True)
     bolus_df["total"] = bolus_df["normal"] + bolus_df["extended"]
 else:
     bolus_df["total"] = bolus_df["normal"]
@@ -652,6 +883,11 @@ bgm_basic = get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_fo
 weekly_date_range = "Oct 26, 2018 - Nov 8, 2018"
 weekly_view = get_weekly_stats(bgm_df, weekly_date_range, bg_format, low, high)
 
+# Custom Daily View
+# Date Range from staging console debugger (activate using localStorage.debug=true)
+daily_date_range = ["2018-11-07T01:35:36.700Z", "2018-11-08T01:35:36.700Z"]
+daily_cgm_view = get_daily_cgm_stats(cgm_df, bolus_df, basal_df, wizard_df, daily_date_range, bg_format, low, high, local_timezone)
+daily_bgm_view = get_daily_bgm_stats(bgm_df, bolus_df, basal_df, wizard_df, daily_date_range, bg_format, low, high, local_timezone)
 # # OUTPUT
 
 # In[64]:
@@ -665,4 +901,10 @@ display(Markdown("## Basics View (CGM)"))
 display(cgm_basic.T)
 display(Markdown("## Basics View (BGM)"))
 display(bgm_basic.T)
+display(Markdown("## Weekly View"))
+display(weekly_view.T)
+display(Markdown("## Daily View (CGM)"))
+display(daily_cgm_view.T)
+display(Markdown("## Daily View (BGM)"))
+display(daily_bgm_view.T)
 
