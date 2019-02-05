@@ -138,7 +138,7 @@ def get_cgm_trends(cgm_df, start_date, end_date, range_name, bg_format, low, hig
         trends_df.fillna("No CGM Data", inplace=True)
     else:
 
-        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
+        trends_df["Date Range"] = pd.to_datetime(start_date).strftime('%b %d, %Y') + " - " + (pd.to_datetime(end_date)-timedelta(days=1)).strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
@@ -214,7 +214,7 @@ def get_bgm_trends(bgm_df, start_date, end_date, range_name, bg_format, low, hig
         trends_df.fillna("No BGM Data", inplace=True)
     else:
 
-        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
+        trends_df["Date Range"] = pd.to_datetime(start_date).strftime('%b %d, %Y') + " - " + (pd.to_datetime(end_date)-timedelta(days=1)).strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
@@ -306,7 +306,7 @@ def get_cgm_basic(cgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
         trends_df.fillna("No CGM Data", inplace=True)
     else:
 
-        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
+        trends_df["Date Range"] = pd.to_datetime(start_date).strftime('%b %d, %Y') + " - " + (pd.to_datetime(end_date)-timedelta(days=1)).strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
@@ -440,7 +440,7 @@ def get_bgm_basic(bgm_df, bolus_df, basal_df, wizard_df, end_date, bg_format, lo
         trends_df.fillna("No BGM Data", inplace=True)
     else:
 
-        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
+        trends_df["Date Range"] = pd.to_datetime(start_date).strftime('%b %d, %Y') + " - " + (pd.to_datetime(end_date)-timedelta(days=1)).strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
@@ -547,7 +547,7 @@ def get_weekly_stats(bgm_df, weekly_date_range, bg_format, low, high):
         trends_df.fillna("No BGM Data", inplace=True)
     else:
 
-        trends_df["Date Range"] = df["localTime"].min().strftime('%b %d, %Y') + " - " + df["localTime"].max().strftime('%b %d, %Y')
+        trends_df["Date Range"] = pd.to_datetime(start_date).strftime('%b %d, %Y') + " - " + (pd.to_datetime(end_date)-timedelta(days=1)).strftime('%b %d, %Y')
         trends_df["First Timestamp"] = df["localTime"].min()
         trends_df["Last Timestamp"] = df["localTime"].max()
 
