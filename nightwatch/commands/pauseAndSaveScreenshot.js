@@ -6,7 +6,7 @@ exports.command = function (pauseLengthMilliSeconds, screenshotName) {
         + self.currentTest.module + '/' + self.globals.timeTestStarted;
 
     self.perform(function () {
-        if (self.globals.test_settings.captureScreens) {
+        if (self.globals.captureScreens) {
             self.pause(pauseLengthMilliSeconds);
             self.saveScreenshot(screenshotsDirectory + '/'
                 + screenshotName + '.png');

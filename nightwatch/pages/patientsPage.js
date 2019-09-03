@@ -20,7 +20,7 @@ module.exports = {
         viewPatientData: function () {
             this
                 .waitForElementPresent('@showAllHideAllToggle')
-                .pauseAndSaveScreenshot(10000, 'patients-page')
+                .pauseAndSaveScreenshot(20000, 'patients-page')
                 .click('@showAllHideAllToggle')
                 .pauseAndSaveScreenshot(10000, 'patients-table')
                 .click('@firstPatientInTable');

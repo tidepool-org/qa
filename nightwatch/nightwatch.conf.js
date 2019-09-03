@@ -1,19 +1,25 @@
 "use strict";
+require('env2')('.env'); // optionally store your environment variables in .env
+const seleniumServer = require("selenium-server");
+const chromedriver = require("chromedriver");
+const PKG = require('./package.json'); // so we can get the version of the project
+
 
 var globalVariables = require("./data/globalTestVariables.js");
 
 module.exports = {
+	//"globals_path": "config/globals.js",
     "src_folders": ["./tests"],
     "output_folder": "./reports",
     "custom_commands_path": "./commands",
     "page_objects_path": "./pages",
     "selenium" : {
         "start_process": true,
-        "server_path": "./node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-2.53.1.jar",
+        "server_path": seleniumServer.path,
         "host": "127.0.0.1",
         "port": 4444,
         "cli_args": {
-            "webdriver.chrome.driver" : "./node_modules/chromedriver/bin/chromedriver"
+            "webdriver.chrome.driver" : chromedriver.path
         }
     },
     "test_settings": {

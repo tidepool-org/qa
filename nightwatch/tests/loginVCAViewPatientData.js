@@ -9,6 +9,11 @@ module.exports = {
             .page.patientsPage().viewPatientData()
             .page.dataPage().confirmOnDataPage()
             .page.logout().logoutEmailVerified()
+            .perform(function() {
+				console.log('elementValue', browser.globals.users.verifiedClinician);
+				// without any defined parameters, perform
+				// completes immediately (synchronously)
+				})
             .end();
     }
 };

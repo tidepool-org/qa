@@ -4,7 +4,7 @@ var moment = require('moment');
 
 exports.command = function (user) {
     var self = this;
-    var randomSeed = self.globals.test_settings.randomSeed ||
+    var randomSeed = self.globals.randomSeed ||
         self.globals.timeTestStarted;
     var rand = require('random-seed').create(randomSeed);
     var now = moment.utc();
